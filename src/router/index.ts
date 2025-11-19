@@ -9,6 +9,21 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: () => import('../views/SignIn.vue'),　　// サインイン画面
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/DashBoard.vue'), // ログイン後のダッシュボード
+    },
+    {
+      path: '/auth/callback',
+      name: 'authCallback',
+      component: () => import('../views/AuthCallback.vue'), // 認証後の処理を行うビュー
+    },
   ],
 })
 

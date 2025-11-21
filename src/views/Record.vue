@@ -56,14 +56,19 @@
             
             <p v-if="currentUserDiscordId"><strong>あなたのID:</strong> {{ currentUserDiscordId }}</p>
             <p v-else><em>サインインしているユーザのIDを取得できませんでした</em></p>
+
+            <p v-if="whitelistChecking">ホワイトリストを確認中...</p>
+            <p v-else-if="!whitelisted && currentUserDiscordId" style="color: #c00;">
+              あなたのIDはホワイトリストに登録されていないため、記録登録はできません。
+            </p>
         </div>
 
         <!-- 追加ボタン -->
-        <button @click="addRecord" :disabled="!isFormValid || !currentUserDiscordId"
+        <button @click="addRecord" :disabled="!isFormValid || !currentUserDiscordId || !whitelisted"
                 class="mt-4 w-full py-2 text-white font-bold rounded-md transition duration-150"
                 :class="{
-                    'bg-blue-600 hover:bg-blue-700': isFormValid && currentUserDiscordId,
-                    'bg-gray-400 cursor-not-allowed': !isFormValid || !currentUserDiscordId}">
+                    'bg-blue-600 hover:bg-blue-700': isFormValid && currentUserDiscordId && whitelisted,
+                    'bg-gray-400 cursor-not-allowed': !isFormValid || !currentUserDiscordId || !whitelisted}">
             記録を登録
         </button>
     </div>
@@ -85,6 +90,9 @@ const newRecord = ref({
     user_id: '', 
 });
 const loading = ref(false);
+
+const whitelisted = ref(false);
+const whitelistChecking = ref(false);
 
 // フォームの入力チェック
 const isFormValid = computed(() => {
@@ -116,7 +124,33 @@ const fetchRecords = async () => {
   loading.value = false;
 };
 
-// newRecord.user_id に Discord の id を設定
+// member_list テーブルに discord_id が存在するか確認
+const checkWhitelist = async (discordId) => {
+  if (!discordId) return false;
+  whitelistChecking.value = true;
+  try {
+    console.log('supabase config', import.meta.env.VITE_SUPABASE_URL)
+    const { data, error } = await supabase
+      .from('member_list')
+      .select('*')
+      .eq('discord_id', discordId)
+      .limit(1);
+    console.log(discordId, data, error);
+
+    if (error) {
+      console.error('whitelist check error:', error.message || error);
+      return false;
+    }
+    return Array.isArray(data) && data.length > 0;
+  } catch (e) {
+    console.error('checkWhitelist exception:', e);
+    return false;
+  } finally {
+    whitelistChecking.value = false;
+  }
+};
+
+// newRecord.user_id に Discord の id を設定し、ホワイトリスト確認
 const loadCurrentUser = async () => {
   try {
     const { data, error } = await supabase.auth.getUser();
@@ -129,14 +163,31 @@ const loadCurrentUser = async () => {
     const discordId = data.user?.identities?.[0]?.id ?? '';
     currentUserDiscordId.value = discordId;
     newRecord.value.user_id = discordId;
+
+    // ホワイトリスト確認
+    if (discordId) {
+      whitelisted.value = await checkWhitelist(discordId);
+    } else {
+      whitelisted.value = false;
+    }
   } catch (e) {
     console.error('loadCurrentUser error:', e);
+    whitelisted.value = false;
   }
 };
 
-// 記録を追加
+// 記録を追加（ホワイトリスト未登録なら拒否）
 const addRecord = async () => {
   if (!isFormValid.value || !currentUserDiscordId.value) return;
+
+  // 再確認（race 対策）
+  if (!whitelisted.value) {
+    whitelisted.value = await checkWhitelist(currentUserDiscordId.value);
+    if (!whitelisted.value) {
+      alert('あなたのIDはホワイトリストに登録されていないため、記録登録できません。');
+      return;
+    }
+  }
 
   const recordData = {
     user_id: newRecord.value.user_id,

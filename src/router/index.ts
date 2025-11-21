@@ -24,6 +24,11 @@ const router = createRouter({
       name: 'authCallback',
       component: () => import('../views/AuthCallback.vue'), // 認証後の処理を行うビュー
     },
+    {
+      path: '/record',
+      name: 'record',
+      component: () => import('../views/Record.vue'), // 記録画面
+    }
   ],
 })
 

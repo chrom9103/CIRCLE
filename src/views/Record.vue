@@ -1,30 +1,5 @@
 <template>
   <div>
-    <h1>記録</h1>
-    
-    <div v-if="loading">
-        <p>データを読み込み中...</p>
-    </div>
-
-    <!-- 記録一覧 -->
-    <ul>
-      <li v-for="record in activeRecords" :key="record.transaction_id">
-        <div>
-            <!-- 金額と用途を表示 -->
-            <span :class="{'text-red-600': record.record_type === 'Expense', 'text-green-600': record.record_type === 'Revenue'}">
-                {{ record.record_type === 'Expense' ? 'ー' : '＋' }} {{ record.amount.toLocaleString() }} 円
-            </span>
-            <span >| {{ record.purpose }}</span>
-            <p>カテゴリ: {{ record.category }} / ID: {{ record.transaction_id.substring(0, 8) }}...</p>
-        </div>
-        
-        <!-- 論理削除ボタン -->
-        <button @click="softDeleteRecord(record.transaction_id)">
-            取消済にする
-        </button>
-      </li>
-    </ul>
-
     <!-- 新規記録の入力フォーム -->
     <div>
         <h2>新規記録の追加</h2>
@@ -102,27 +77,6 @@ const isFormValid = computed(() => {
            newRecord.value.record_type.trim() !== '' &&
            newRecord.value.category.trim() !== '';
 });
-
-// status='active' の記録のみを表示
-const activeRecords = computed(() => {
-    return records.value.filter(r => r.status === 'active');
-});
-
-// DBから記録を取得
-const fetchRecords = async () => {
-  loading.value = true;
-  const { data, error } = await supabase
-    .from('financial_records')
-    .select('*')
-    .order('created_at', { ascending: false });
-    
-    if (!error) {
-      records.value = data || [];
-    } else {
-      console.error('データの取得に失敗しました:', error.message);
-    }
-  loading.value = false;
-};
 
 // member_list テーブルに discord_id が存在するか確認
 const checkWhitelist = async (discordId) => {
@@ -208,30 +162,14 @@ const addRecord = async () => {
     newRecord.value.amount = null;
     newRecord.value.category = '';
     newRecord.value.record_type = 'Expense';
-    fetchRecords();
     console.log('記録が正常に追加されました');
   } else {
      console.error('記録の追加に失敗しました:', error.message);
   }
 };
 
-// 記録を論理削除 
-const softDeleteRecord = async (id) => {
-  const { error } = await supabase
-    .from('financial_records')
-    .update({ status: 'deleted' })
-    .eq('id', id);
-
-  if (!error) {
-    fetchRecords();
-  } else {
-    console.error('記録の論理削除に失敗しました:', error.message);
-  }
-};
-
 onMounted(async () => {
   await loadCurrentUser();
-  await fetchRecords();
 });
 </script>
 

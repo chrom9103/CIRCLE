@@ -53,12 +53,17 @@
             <p v-if="!isFormValid">
                 用途、金額、種別、カテゴリは必須です。（金額は0以上）
             </p>
+            
+            <p v-if="currentUserDiscordId"><strong>あなたのID:</strong> {{ currentUserDiscordId }}</p>
+            <p v-else><em>サインインしているユーザのIDを取得できませんでした</em></p>
         </div>
 
         <!-- 追加ボタン -->
-        <button @click="addRecord" :disabled="!isFormValid"
+        <button @click="addRecord" :disabled="!isFormValid || !currentUserDiscordId"
                 class="mt-4 w-full py-2 text-white font-bold rounded-md transition duration-150"
-                :class="{'bg-blue-600 hover:bg-blue-700': isFormValid, 'bg-gray-400 cursor-not-allowed': !isFormValid}">
+                :class="{
+                    'bg-blue-600 hover:bg-blue-700': isFormValid && currentUserDiscordId,
+                    'bg-gray-400 cursor-not-allowed': !isFormValid || !currentUserDiscordId}">
             記録を登録
         </button>
     </div>
@@ -70,6 +75,8 @@ import { ref, onMounted, computed } from 'vue';
 import { supabase } from '../supabase'; 
 
 const records = ref([]);
+const currentUser = ref(null);
+const currentUserDiscordId = ref('');
 const newRecord = ref({
     purpose: '',
     amount: null,
@@ -101,18 +108,35 @@ const fetchRecords = async () => {
     .select('*')
     .order('created_at', { ascending: false });
     
-  if (!error) {
-    records.value = data;
-  } else {
-    console.error('データの取得に失敗しました:', error.message);
-  }
+    if (!error) {
+      records.value = data || [];
+    } else {
+      console.error('データの取得に失敗しました:', error.message);
+    }
   loading.value = false;
 };
 
+// newRecord.user_id に Discord の id を設定
+const loadCurrentUser = async () => {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+    if (error) {
+      console.error('Error fetching user:', error.message);
+      return;
+    }
+    currentUser.value = data.user;
+
+    const discordId = data.user?.identities?.[0]?.id ?? '';
+    currentUserDiscordId.value = discordId;
+    newRecord.value.user_id = discordId;
+  } catch (e) {
+    console.error('loadCurrentUser error:', e);
+  }
+};
 
 // 記録を追加
 const addRecord = async () => {
-  if (!isFormValid.value) return;
+  if (!isFormValid.value || !currentUserDiscordId.value) return;
 
   const recordData = {
     user_id: newRecord.value.user_id,
@@ -134,7 +158,7 @@ const addRecord = async () => {
     newRecord.value.category = '';
     newRecord.value.record_type = 'Expense';
     fetchRecords();
-    console.log('記録が正常に追加されました\n', newRecord.value);
+    console.log('記録が正常に追加されました');
   } else {
      console.error('記録の追加に失敗しました:', error.message);
   }
@@ -154,7 +178,10 @@ const softDeleteRecord = async (id) => {
   }
 };
 
-onMounted(fetchRecords);
+onMounted(async () => {
+  await loadCurrentUser();
+  await fetchRecords();
+});
 </script>
 
 <style scoped>

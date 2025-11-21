@@ -124,7 +124,7 @@ const softDeleteRecord = async (id) => {
   const { error } = await supabase
     .from('financial_records')
     .update({ status: 'deleted' })
-    .eq('id', id);
+    .eq('transaction_id', id);
 
   if (!error) {
     fetchRecords();

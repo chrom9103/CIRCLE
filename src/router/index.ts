@@ -28,6 +28,11 @@ const router = createRouter({
       path: '/record',
       name: 'record',
       component: () => import('../views/Record.vue'), // 記録画面
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/Admin.vue'), // 管理者画面
     }
   ],
 })

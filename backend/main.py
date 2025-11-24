@@ -122,15 +122,27 @@ def update_record(transaction_id: str, payload: dict, authorization: Optional[st
     return {"success": True}
 
 
-@app.get("/api/whitelist")
+@app.get("/api/is_member")
 def check_whitelist(discord_id: str):
     if not discord_id:
         raise HTTPException(status_code=400, detail="discord_id is required")
     resp = supabase.from_("member_list").select("*").eq("discord_id", discord_id).limit(1).execute()
     data, error = _resp_to_tuple(resp)
+    print("member")
     if error:
         raise HTTPException(status_code=500, detail=str(error))
-    return {"whitelisted": bool(data and len(data) > 0)}
+    return {"is_member": bool(data and len(data) > 0)}
+
+
+@app.get("/api/is_admin")
+def check_admin(discord_id: str):
+    if not discord_id:
+        raise HTTPException(status_code=400, detail="discord_id is required")
+    resp = supabase.from_("admin_list").select("*").eq("discord_id", discord_id).limit(1).execute()
+    data, error = _resp_to_tuple(resp)
+    if error:
+        raise HTTPException(status_code=500, detail=str(error))
+    return {"is_admin": bool(data and len(data) > 0)}
 
 
 @app.get("/api/user")

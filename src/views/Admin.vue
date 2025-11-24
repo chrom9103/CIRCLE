@@ -69,19 +69,19 @@ const fetchRecords = async () => {
   }
 };
 
-// member_list テーブルに discord_id が存在するか確認
+// admin_list テーブルに discord_id が存在するか確認
 const checkWhitelist = async (discordId) => {
   if (!discordId) return false;
   whitelistChecking.value = true;
   try {
-    const url = (BACKEND ? `${BACKEND}` : '') + `/api/whitelist?discord_id=${encodeURIComponent(discordId)}`
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_admin?discord_id=${encodeURIComponent(discordId)}`
     const res = await fetch(url)
     if (!res.ok) {
-      console.error('whitelist check failed:', await res.text())
+      console.error('admin check failed:', await res.text())
       return false
     }
     const json = await res.json()
-    return !!json.whitelisted
+    return !!json.is_admin
   } catch (e) {
     console.error('checkWhitelist exception:', e);
     return false;

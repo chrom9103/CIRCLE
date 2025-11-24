@@ -54,6 +54,8 @@
 import { ref, onMounted, computed } from 'vue';
 import { supabase } from '../supabase'; 
 
+const BACKEND = import.meta.env.VITE_BACKEND_URL ?? ''
+
 const records = ref([]);
 const currentUser = ref(null);
 const currentUserDiscordId = ref('');
@@ -78,24 +80,20 @@ const isFormValid = computed(() => {
            newRecord.value.category.trim() !== '';
 });
 
-// member_list テーブルに discord_id が存在するか確認
+// member_list テーブルに discord_id が存在するか確認（バックエンド経由）
 const checkWhitelist = async (discordId) => {
   if (!discordId) return false;
   whitelistChecking.value = true;
   try {
-    console.log('supabase config', import.meta.env.VITE_SUPABASE_URL)
-    const { data, error } = await supabase
-      .from('member_list')
-      .select('*')
-      .eq('discord_id', discordId)
-      .limit(1);
-    console.log(discordId, data, error);
-
-    if (error) {
-      console.error('whitelist check error:', error.message || error);
-      return false;
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/whitelist?discord_id=${encodeURIComponent(discordId)}`
+    const res = await fetch(url)
+    console.log('checkWhitelist response:', res);
+    if (!res.ok) {
+      console.error('whitelist check failed:', await res.text())
+      return false
     }
-    return Array.isArray(data) && data.length > 0;
+    const json = await res.json()
+    return !!json.whitelisted
   } catch (e) {
     console.error('checkWhitelist exception:', e);
     return false;
@@ -152,19 +150,30 @@ const addRecord = async () => {
     status: 'active',
   };
 
-  const { error } = await supabase
-    .from('financial_records')
-    .insert([recordData]);
-
-  if (!error) {
-    // フォームをリセット
+  try {
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const url = (BACKEND ? `${BACKEND}` : '') + '/api/records'
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(recordData),
+    })
+    if (!res.ok) {
+      console.error('記録の追加に失敗しました:', await res.text())
+      return
+    }
+    // リセット
     newRecord.value.purpose = '';
     newRecord.value.amount = null;
     newRecord.value.category = '';
     newRecord.value.record_type = 'Expense';
-    console.log('記録が正常に追加されました');
-  } else {
-     console.error('記録の追加に失敗しました:', error.message);
+    console.log('記録が正常に追加されました')
+  } catch (e) {
+    console.error('記録の追加に失敗しました:', e)
   }
 };
 

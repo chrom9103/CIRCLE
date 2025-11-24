@@ -31,6 +31,8 @@
 import { ref, onMounted, computed } from 'vue';
 import { supabase } from '../supabase'; 
 
+const BACKEND = import.meta.env.VITE_BACKEND_URL ?? ''
+
 const records = ref([]);
 const currentUser = ref(null);
 const currentUserDiscordId = ref('');
@@ -54,17 +56,17 @@ const activeRecords = computed(() => {
 // DBから記録を取得
 const fetchRecords = async () => {
   loading.value = true;
-  const { data, error } = await supabase
-    .from('financial_records')
-    .select('*')
-    .order('created_at', { ascending: false });
-    
-    if (!error) {
-      records.value = data || [];
-    } else {
-      console.error('データの取得に失敗しました:', error.message);
-    }
-  loading.value = false;
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + '/api/records'
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(await res.text())
+    const data = await res.json()
+    records.value = data || []
+  } catch (e) {
+    console.error('データの取得に失敗しました:', e)
+  } finally {
+    loading.value = false
+  }
 };
 
 // member_list テーブルに discord_id が存在するか確認
@@ -72,19 +74,14 @@ const checkWhitelist = async (discordId) => {
   if (!discordId) return false;
   whitelistChecking.value = true;
   try {
-    console.log('supabase config', import.meta.env.VITE_SUPABASE_URL)
-    const { data, error } = await supabase
-      .from('member_list')
-      .select('*')
-      .eq('discord_id', discordId)
-      .limit(1);
-    console.log(discordId, data, error);
-
-    if (error) {
-      console.error('whitelist check error:', error.message || error);
-      return false;
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/whitelist?discord_id=${encodeURIComponent(discordId)}`
+    const res = await fetch(url)
+    if (!res.ok) {
+      console.error('whitelist check failed:', await res.text())
+      return false
     }
-    return Array.isArray(data) && data.length > 0;
+    const json = await res.json()
+    return !!json.whitelisted
   } catch (e) {
     console.error('checkWhitelist exception:', e);
     return false;
@@ -119,17 +116,22 @@ const loadCurrentUser = async () => {
   }
 };
 
-// 記録を論理削除 
+// 記録を論理削除（バックエンド経由）
 const softDeleteRecord = async (id) => {
-  const { error } = await supabase
-    .from('financial_records')
-    .update({ status: 'deleted' })
-    .eq('transaction_id', id);
-
-  if (!error) {
-    fetchRecords();
-  } else {
-    console.error('記録の論理削除に失敗しました:', error.message);
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'deleted' }),
+    })
+    if (!res.ok) {
+      console.error('記録の論理削除に失敗しました:', await res.text())
+      return
+    }
+    await fetchRecords()
+  } catch (e) {
+    console.error('記録の論理削除に失敗しました:', e)
   }
 };
 

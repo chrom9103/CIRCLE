@@ -2,6 +2,8 @@ import os
 from typing import Optional
 
 from fastapi import FastAPI, Header, HTTPException
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -75,17 +77,16 @@ def _resp_to_tuple(resp):
     return data, error
 
 
-@app.get("/api/records")
-def get_records(authorization: Optional[str] = Header(None)):
+def _get_bearer_token(authorization: Optional[str]) -> str:
     if not authorization:
         raise HTTPException(status_code=401, detail="Authorization header missing")
-
     parts = authorization.split()
     if len(parts) != 2 or parts[0].lower() != "bearer":
         raise HTTPException(status_code=401, detail="Invalid authorization header")
-    token = parts[1]
+    return parts[1]
 
-    # Get user info
+
+def _get_user_by_token(token: str):
     try:
         resp_user = supabase.auth.get_user(token)
         if isinstance(resp_user, dict):
@@ -96,13 +97,14 @@ def get_records(authorization: Optional[str] = Header(None)):
             err = getattr(resp_user, "error", None)
         if err:
             raise HTTPException(status_code=401, detail=str(err))
+        return user
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"failed to validate token: {e}")
 
-    # Extract discord id robustly from user object
-    discord_id = None
+
+def _extract_discord_id(user) -> Optional[str]:
     try:
         if isinstance(user, dict):
             identities = user.get("identities") or user.get("user_metadata", {}).get("identities")
@@ -111,16 +113,14 @@ def get_records(authorization: Optional[str] = Header(None)):
         if identities and isinstance(identities, (list, tuple)) and len(identities) > 0:
             first = identities[0]
             if isinstance(first, dict):
-                discord_id = first.get("id")
-            else:
-                discord_id = getattr(first, "id", None)
+                return first.get("id")
+            return getattr(first, "id", None)
     except Exception:
-        discord_id = None
+        return None
+    return None
 
-    if not discord_id:
-        raise HTTPException(status_code=403, detail="could not determine discord id from token")
 
-    # Check admin_list for this discord id
+def _ensure_admin(discord_id: str) -> None:
     try:
         resp_admin = supabase.from_("admin_list").select("*").eq("discord_id", discord_id).limit(1).execute()
         admin_data, admin_err = _resp_to_tuple(resp_admin)
@@ -133,22 +133,30 @@ def get_records(authorization: Optional[str] = Header(None)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"admin check failed: {e}")
 
-    # Authorized: fetch records (server-side sorting)
+
+def _fetch_records_sorted() -> list:
     resp = supabase.from_("financial_records").select("*").execute()
     data, error = _resp_to_tuple(resp)
     if error:
         raise HTTPException(status_code=500, detail=str(error))
-
     if not data:
         return []
-
     try:
         if isinstance(data, list):
             data = sorted(data, key=lambda r: r.get("created_at") or "", reverse=True)
     except Exception:
         pass
-
     return data or []
+
+@app.get("/api/records")
+def get_records(authorization: Optional[str] = Header(None, alias="Authorization")):
+    token = _get_bearer_token(authorization)
+    user = _get_user_by_token(token)
+    discord_id = _extract_discord_id(user)
+    if not discord_id:
+        raise HTTPException(status_code=403, detail="could not determine discord id from token")
+    _ensure_admin(discord_id)
+    return _fetch_records_sorted()
 
 
 @app.post("/api/records")

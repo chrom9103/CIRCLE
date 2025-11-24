@@ -85,15 +85,14 @@ const checkWhitelist = async (discordId) => {
   if (!discordId) return false;
   whitelistChecking.value = true;
   try {
-    const url = (BACKEND ? `${BACKEND}` : '') + `/api/whitelist?discord_id=${encodeURIComponent(discordId)}`
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_member?discord_id=${encodeURIComponent(discordId)}`
     const res = await fetch(url)
-    console.log('checkWhitelist response:', res);
     if (!res.ok) {
-      console.error('whitelist check failed:', await res.text())
+      console.error('is_member check failed:', await res.text())
       return false
     }
     const json = await res.json()
-    return !!json.whitelisted
+    return !!json.is_member
   } catch (e) {
     console.error('checkWhitelist exception:', e);
     return false;

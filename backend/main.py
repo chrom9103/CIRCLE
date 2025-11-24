@@ -76,7 +76,64 @@ def _resp_to_tuple(resp):
 
 
 @app.get("/api/records")
-def get_records():
+def get_records(authorization: Optional[str] = Header(None)):
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Authorization header missing")
+
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid authorization header")
+    token = parts[1]
+
+    # Get user info
+    try:
+        resp_user = supabase.auth.get_user(token)
+        if isinstance(resp_user, dict):
+            user = resp_user.get("data") or resp_user.get("user")
+            err = resp_user.get("error")
+        else:
+            user = getattr(resp_user, "data", None) or getattr(resp_user, "user", None)
+            err = getattr(resp_user, "error", None)
+        if err:
+            raise HTTPException(status_code=401, detail=str(err))
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"failed to validate token: {e}")
+
+    # Extract discord id robustly from user object
+    discord_id = None
+    try:
+        if isinstance(user, dict):
+            identities = user.get("identities") or user.get("user_metadata", {}).get("identities")
+        else:
+            identities = getattr(user, "identities", None)
+        if identities and isinstance(identities, (list, tuple)) and len(identities) > 0:
+            first = identities[0]
+            if isinstance(first, dict):
+                discord_id = first.get("id")
+            else:
+                discord_id = getattr(first, "id", None)
+    except Exception:
+        discord_id = None
+
+    if not discord_id:
+        raise HTTPException(status_code=403, detail="could not determine discord id from token")
+
+    # Check admin_list for this discord id
+    try:
+        resp_admin = supabase.from_("admin_list").select("*").eq("discord_id", discord_id).limit(1).execute()
+        admin_data, admin_err = _resp_to_tuple(resp_admin)
+        if admin_err:
+            raise HTTPException(status_code=500, detail=str(admin_err))
+        if not (admin_data and len(admin_data) > 0):
+            raise HTTPException(status_code=403, detail="admin access required")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"admin check failed: {e}")
+
+    # Authorized: fetch records (server-side sorting)
     resp = supabase.from_("financial_records").select("*").execute()
     data, error = _resp_to_tuple(resp)
     if error:
@@ -128,7 +185,6 @@ def check_whitelist(discord_id: str):
         raise HTTPException(status_code=400, detail="discord_id is required")
     resp = supabase.from_("member_list").select("*").eq("discord_id", discord_id).limit(1).execute()
     data, error = _resp_to_tuple(resp)
-    print("member")
     if error:
         raise HTTPException(status_code=500, detail=str(error))
     return {"is_member": bool(data and len(data) > 0)}

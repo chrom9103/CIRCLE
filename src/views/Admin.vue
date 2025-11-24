@@ -58,7 +58,10 @@ const fetchRecords = async () => {
   loading.value = true;
   try {
     const url = (BACKEND ? `${BACKEND}` : '') + '/api/records'
-    const res = await fetch(url)
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch(url, { headers })
     if (!res.ok) throw new Error(await res.text())
     const data = await res.json()
     records.value = data || []

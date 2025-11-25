@@ -31,7 +31,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { supabase } from '../supabase'; 
 
-const BACKEND = import.meta.env.VITE_BACKEND_URL ?? ''
+const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
 
 const records = ref([]);
 const currentUser = ref(null);

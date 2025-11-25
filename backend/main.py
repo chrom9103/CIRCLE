@@ -1,4 +1,5 @@
 import os
+import re
 from typing import Optional
 
 from fastapi import FastAPI, Header, HTTPException
@@ -6,6 +7,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+from postgrest.exceptions import APIError
 
 from supabase import create_client
 
@@ -200,13 +203,17 @@ def check_whitelist(discord_id: str):
 
 @app.get("/api/is_admin")
 def check_admin(discord_id: str):
-    if not discord_id:
-        raise HTTPException(status_code=400, detail="discord_id is required")
-    resp = supabase.from_("admin_list").select("*").eq("discord_id", discord_id).limit(1).execute()
-    data, error = _resp_to_tuple(resp)
-    if error:
-        raise HTTPException(status_code=500, detail=str(error))
-    return {"is_admin": bool(data and len(data) > 0)}
+    if not re.fullmatch(r"\d+", discord_id):
+        return JSONResponse(status_code=400, content={"detail": "invalid discord_id, must be numeric"})
+    try:
+        resp = supabase.from_("admin_list").select("*").eq("discord_id", int(discord_id)).limit(1).execute()
+        data = resp.data or []
+        is_admin = len(data) > 0
+        return {"is_admin": is_admin}
+    except APIError as e:
+        return JSONResponse(status_code=400, content={"detail": str(e)})
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"detail": "internal error"})
 
 
 @app.get("/api/user")

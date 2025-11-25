@@ -1,18 +1,18 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.vue",
-    "src/**/*.tsx",
-    "src/**/*.jsx"
+    "frontend/src/**/*.ts",
+    "frontend/src/**/*.d.ts",
+    "frontend/src/**/*.vue",
+    "frontend/src/**/*.tsx",
+    "frontend/src/**/*.jsx"
   ],
-  "exclude": ["src/**/__tests__/*"],
+  "exclude": ["frontend/src/**/__tests__/*"],
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "types": ["vite/client"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["frontend/src/*"]
     }
   }
 }

@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: CIRCLE-ingress
+spec:
+  ingressClassName: public
+  rules:
+    - host: www.chrom.jp
+      http:
+        paths:
+          - path: /CIRCLE
+            pathType: Prefix
+            backend:
+              service:
+                name: CIRCLE-service
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - www.chrom.jp
+      secretName: online-editer-secret

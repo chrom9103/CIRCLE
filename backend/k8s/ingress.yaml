@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: CIRCLE-ingress
+  name: circle-ingress
 spec:
   ingressClassName: public
   rules:
@@ -12,9 +12,10 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: CIRCLE-service
+                # Route to the frontend (nginx) service which serves the SPA
+                name: circle-frontend-service
                 port:
-                  number: 8080
+                  number: 80
   tls:
     - hosts:
         - www.chrom.jp

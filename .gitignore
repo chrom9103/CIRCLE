@@ -1,5 +1,15 @@
+# Ignored directories and files for this project
+
+# Node.js dependencies
 node_modules/
+
+# Python virtual environment　or cache folders
 __pycache__/
 .venv/
 
+# environment variables file
 .env
+
+# Secrets or generated archives
+secrets
+*.tar

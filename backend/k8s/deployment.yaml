@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: circle-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: circle-backend
+  template:
+    metadata:
+      labels:
+        app: circle-backend
+    spec:
+      containers:
+        - name: circle-backend
+          image: circle-backend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          env:
+            - name: BACKEND_PORT
+              value: "8081"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "1024Mi"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: circle-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: circle-frontend
+  template:
+    metadata:
+      labels:
+        app: circle-frontend
+    spec:
+      containers:
+        - name: circle-frontend
+          image: circle-frontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

@@ -12,9 +12,9 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import records as records_router
-from .routers import auth as auth_router
-from .cruds.discord_sync import sync_roles_with_supabase
+from routers import records as records_router
+from routers import auth as auth_router
+from routers import admin_sync as admin_sync_router
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +52,7 @@ def validation_exception_handler(request, exc):
 
 app.include_router(records_router.router)
 app.include_router(auth_router.router)
+app.include_router(admin_sync_router.get_router(discord_client))
 
 
 @app.on_event("startup")

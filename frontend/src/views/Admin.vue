@@ -24,6 +24,16 @@
         </button>
       </li>
     </ul>
+
+    <!-- 管理者/メンバー同期ボタン -->
+    <div style="margin: 1rem 0;">
+      <button @click="syncAdmins" :disabled="syncingAdmins">管理者(sync admin_list)</button>
+      <button @click="syncMembers" :disabled="syncingMembers" style="margin-left: 0.5rem;">メンバー(sync member_list)</button>
+      <span v-if="syncMessage" style="margin-left:0.75rem">{{ syncMessage }}</span>
+    </div>
+
+    <p>aaaa</p>
+
   </div>
 </template>
 
@@ -44,6 +54,9 @@ const newRecord = ref({
     user_id: '', 
 });
 const loading = ref(false);
+const syncingAdmins = ref(false);
+const syncingMembers = ref(false);
+const syncMessage = ref('');
 
 const whitelisted = ref(false);
 const whitelistChecking = ref(false);
@@ -142,6 +155,51 @@ onMounted(async () => {
   await loadCurrentUser();
   await fetchRecords();
 });
+
+// 管理者同期をトリガー
+const syncAdmins = async () => {
+  syncingAdmins.value = true;
+  syncMessage.value = '';
+  try {
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const url = (BACKEND ? `${BACKEND}` : '') + '/admin/sync-admins'
+    const res = await fetch(url, { method: 'POST', headers })
+    const text = await res.text()
+    if (!res.ok) throw new Error(text)
+    syncMessage.value = '管理者同期が完了しました'
+    // 同期後に最新データを取得
+    await fetchRecords()
+  } catch (e) {
+    console.error('syncAdmins error', e)
+    syncMessage.value = '管理者同期に失敗しました'
+  } finally {
+    syncingAdmins.value = false
+  }
+}
+
+// メンバー同期をトリガー
+const syncMembers = async () => {
+  syncingMembers.value = true;
+  syncMessage.value = '';
+  try {
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const url = (BACKEND ? `${BACKEND}` : '') + '/admin/sync-members'
+    const res = await fetch(url, { method: 'POST', headers })
+    const text = await res.text()
+    if (!res.ok) throw new Error(text)
+    syncMessage.value = 'メンバー同期が完了しました'
+    await fetchRecords()
+  } catch (e) {
+    console.error('syncMembers error', e)
+    syncMessage.value = 'メンバー同期に失敗しました'
+  } finally {
+    syncingMembers.value = false
+  }
+}
 </script>
 
 <style scoped>

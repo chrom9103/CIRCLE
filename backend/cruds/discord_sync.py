@@ -4,7 +4,7 @@ from typing import List, Dict, Any, Optional
 
 import discord
 
-from ..core import supabase
+from core import supabase
 
 logger = logging.getLogger(__name__)
 
@@ -63,28 +63,41 @@ async def sync_roles_with_supabase(
         _row_from_member(m) for m in members if any(getattr(role, "id", None) == member_role_id for role in m.roles)
     ]
 
-    # upsert admin_list
+    # upsert admin_list: only discord_id (simpler, avoids schema mismatch)
     try:
         if admin_rows:
-            supabase.from_("admin_list").upsert(admin_rows, on_conflict="discord_id").execute()
+            id_only_rows = [{"discord_id": r["discord_id"]} for r in admin_rows]
+            try:
+                supabase.from_("admin_list").upsert(id_only_rows, on_conflict="discord_id").execute()
+            except Exception as e:
+                logger.exception("failed to upsert admin_list (discord_id only): %s", e)
+                raise
+
             if remove_absent:
-                ids = ",".join(str(r["discord_id"]) for r in admin_rows)
-                supabase.from_("admin_list").delete().not_("discord_id", "in", f"({ids})").execute()
+                ids = ",".join(str(r["discord_id"]) for r in id_only_rows)
+                supabase.from_("admin_list").delete().filter("discord_id", "not.in", f"({ids})").execute()
         else:
             if remove_absent:
-                # admin がいないならテーブルを空にする
+                print("admin")
                 supabase.from_("admin_list").delete().execute()
     except Exception:
         logger.exception("failed to upsert/delete admin_list")
         raise
 
-    # upsert member_list
+    # upsert member_list: only discord_id (simpler, avoids schema mismatch)
     try:
         if member_rows:
-            supabase.from_("member_list").upsert(member_rows, on_conflict="discord_id").execute()
+            id_only_rows = [{"discord_id": r["discord_id"]} for r in member_rows]
+            try:
+                supabase.from_("member_list").upsert(id_only_rows, on_conflict="discord_id").execute()
+            except Exception as e:
+                logger.exception("failed to upsert member_list (discord_id only): %s", e)
+                raise
+
             if remove_absent:
-                ids = ",".join(str(r["discord_id"]) for r in member_rows)
-                supabase.from_("member_list").delete().not_("discord_id", "in", f"({ids})").execute()
+                print("mem")
+                ids = ",".join(str(r["discord_id"]) for r in id_only_rows)
+                supabase.from_("member_list").delete().filter("discord_id", "not.in", f"({ids})").execute()
         else:
             if remove_absent:
                 supabase.from_("member_list").delete().execute()

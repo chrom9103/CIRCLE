@@ -4,8 +4,8 @@ from typing import Optional
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import JSONResponse
 
-from ..core import get_bearer_token, get_user_by_token
-from ..cruds.db import check_member, check_admin_by_id
+from core import get_bearer_token, get_user_by_token
+from cruds.db import check_member, check_admin_by_id
 
 
 router = APIRouter()

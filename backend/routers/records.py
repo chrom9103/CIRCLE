@@ -2,8 +2,8 @@ from typing import Optional
 
 from fastapi import APIRouter, Header, HTTPException
 
-from ..core import get_bearer_token, get_user_by_token, extract_discord_id_from_user
-from ..cruds.db import fetch_records_sorted, insert_record, update_record_status, ensure_admin
+from core import get_bearer_token, get_user_by_token, extract_discord_id_from_user
+from cruds.db import fetch_records_sorted, insert_record, update_record_status, ensure_admin
 from pydantic import BaseModel
 
 

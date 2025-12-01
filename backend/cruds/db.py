@@ -1,6 +1,6 @@
 from typing import Optional, List
 
-from ..core import supabase
+from core import supabase
 
 
 def _resp_to_tuple(resp):

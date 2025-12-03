@@ -1,0 +1,25 @@
+# 開発用 Dockerfile（ホットリロード対応）
+FROM node:lts-alpine
+
+WORKDIR /app
+
+# 依存関係をキャッシュするため先にコピー
+COPY package*.json ./
+
+RUN npm ci --silent
+
+# ソースコードはボリュームマウントで提供されるため COPY は不要
+# COPY . .
+
+# Vite の環境変数（ビルド時ではなく実行時に読み込む）
+ARG VITE_SUPABASE_URL
+ARG VITE_SUPABASE_ANON_KEY
+ARG VITE_API_BASE_URL
+ENV VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+ENV VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
+EXPOSE 5173
+
+# Vite 開発サーバーを起動（--host で外部からアクセス可能に）
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

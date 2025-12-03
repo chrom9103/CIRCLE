@@ -1,5 +1,7 @@
 <script setup>
 import { useAuthStore } from '../stores/auth';
+
+import HeaderLayout from '../components/HeaderLayout.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import TheWelcome from '../components/TheWelcome.vue'
 
@@ -7,6 +9,7 @@ const auth = useAuthStore();
 </script>
 
 <template>
+  <HeaderLayout />
   <header>
     <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="125" height="125" />
 
@@ -81,21 +84,4 @@ header {
   border-color: rgba(0,0,0,0.05);
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
 </style>

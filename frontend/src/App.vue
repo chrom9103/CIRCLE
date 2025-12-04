@@ -3,6 +3,8 @@ import { onMounted } from 'vue'
 import { supabase } from './supabase'
 import { useAuthStore } from './stores/auth'
 
+import HeaderLayout from './components/HeaderLayout.vue'
+
 const auth = useAuthStore()
 
 onMounted(async () => {
@@ -25,6 +27,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <HeaderLayout />
   <RouterView>
   </RouterView>
 </template>

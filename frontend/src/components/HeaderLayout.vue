@@ -6,24 +6,26 @@
     </div>
 
     <div class="right">
-      <button :class="['burger', { open: showMenu }]" @click="toggleMenu" aria-label="Open navigation" aria-expanded="false">
+      <button :class="['burger', { open: showMenu }]" @click="toggleMenu" aria-label="Open navigation" :aria-expanded="showMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </button>
 
-      <div v-if="showMenu" class="mobile-menu">
-        <router-link to="/" class="mobile-link" @click="toggleMenu">ホーム</router-link>
-        <router-link to="/dashboard" class="mobile-link" @click="toggleMenu">ダッシュボード</router-link>
-        <router-link to="/settings" class="mobile-link" @click="toggleMenu">設定</router-link>
-        <a href="#" class="mobile-link" @click.prevent="signOut">サインアウト</a>
+      <div v-if="showMenu" class="mobile-menu" role="menu">
+        <router-link to="/" class="mobile-link" @click="toggleMenu" role="menuitem">ホーム</router-link>
+        <router-link to="/record" class="mobile-link" @click="toggleMenu" role="menuitem">記録</router-link>
+        <router-link to="/admin" class="mobile-link" @click="toggleMenu" role="menuitem">管理</router-link>
+        <router-link to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">ダッシュボード</router-link>
+        <button v-if="auth.user" class="signout" @click="signOut" role="menuitem">Sign Out</button>
       </div>
-      <button class="signout" @click="signOut">Sign Out</button>
 
       <div class="user-wrap">
-        <img :src="userAvatar" alt="User Avatar" class="avatar" />
+        <router-link v-if="auth.user" to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">
+          <img :src="userAvatar" alt="User Avatar" class="avatar" />
+        </router-link>
+        <img v-else :src="userAvatar" alt="User Avatar" class="avatar" />
       </div>
-
     </div>
   </header>
 </template>
@@ -195,17 +197,25 @@ const userAvatar = computed(() => {
   flex-direction: column;
   gap: 0.25rem;
   min-width: 160px;
+  z-index: 1000;
+  pointer-events: auto;
 }
 
 .mobile-link {
+  display: block;
+  width: 100%;
   padding: 0.5rem;
   text-decoration: none;
   color: #111827;
 }
 
+.mobile-link:focus,
+.mobile-link:hover {
+  background: rgba(0,0,0,0.04);
+}
+
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .burger { display: inline-flex; }
-  .signout { display: none; }
 }
 </style>

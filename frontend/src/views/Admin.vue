@@ -3,13 +3,7 @@
     <h1>記録</h1>
 
     <!-- accessDenied または未サインイン時の案内 -->
-    <div v-if="accessDenied" style="padding:1rem; border:1px solid #f3c; background:#fff5f5;">
-      <p style="color:#a00; font-weight:600">アクセスが拒否されました（管理者権限が必要です）。</p>
-      <p v-if="!currentUserDiscordId">サインインしてください。</p>
-      <div style="margin-top:0.5rem">
-        <router-link to="/signin">サインインページへ</router-link>
-      </div>
-    </div>
+    <AccessNotice v-if="accessDenied" :accessDenied="accessDenied" :discordId="currentUserDiscordId" />
 
     <div v-else>
       <div v-if="loading">
@@ -52,6 +46,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import AdminGate from '../components/AdminGate.vue'
+import AccessNotice from '../components/AccessNotice.vue'
 import { supabase } from '../supabase'; 
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''

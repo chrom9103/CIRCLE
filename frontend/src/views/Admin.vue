@@ -1,10 +1,20 @@
 <template>
   <div>
     <h1>記録</h1>
-    
-    <div v-if="loading">
-        <p>データを読み込み中...</p>
+
+    <!-- accessDenied または未サインイン時の案内 -->
+    <div v-if="accessDenied" style="padding:1rem; border:1px solid #f3c; background:#fff5f5;">
+      <p style="color:#a00; font-weight:600">アクセスが拒否されました（管理者権限が必要です）。</p>
+      <p v-if="!currentUserDiscordId">サインインしてください。</p>
+      <div style="margin-top:0.5rem">
+        <router-link to="/signin">サインインページへ</router-link>
+      </div>
     </div>
+
+    <div v-else>
+      <div v-if="loading">
+          <p>データを読み込み中...</p>
+      </div>
 
     <!-- 記録一覧 -->
     <ul>
@@ -34,6 +44,7 @@
 
     <p>aaaa</p>
 
+    </div>
   </div>
 </template>
 
@@ -60,6 +71,7 @@ const syncMessage = ref('');
 
 const whitelisted = ref(false);
 const whitelistChecking = ref(false);
+const accessDenied = ref(false);
 
 // status='active' の記録のみを表示
 const activeRecords = computed(() => {
@@ -91,9 +103,20 @@ const checkWhitelist = async (discordId) => {
   whitelistChecking.value = true;
   try {
     const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_admin?discord_id=${encodeURIComponent(discordId)}`
-    const res = await fetch(url)
+    // attach auth token if available
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    const res = await fetch(url, { headers })
     if (!res.ok) {
-      console.error('admin check failed:', await res.text())
+      const text = await res.text()
+      console.error('admin check failed:', res.status, text)
+      return false
+    }
+    const ct = res.headers.get('content-type') || ''
+    if (!ct.includes('application/json')) {
+      const text = await res.text()
+      console.error('is_admin: expected JSON but got', ct, text?.slice(0, 300))
       return false
     }
     const json = await res.json()
@@ -104,19 +127,26 @@ const checkWhitelist = async (discordId) => {
   } finally {
     whitelistChecking.value = false;
   }
-};
+}
 
 // newRecord.user_id に Discord の id を設定し、ホワイトリスト確認
 const loadCurrentUser = async () => {
   try {
-    const { data, error } = await supabase.auth.getUser();
-    if (error) {
-      console.error('Error fetching user:', error.message);
+    const sessionRes = await supabase.auth.getSession();
+    const session = sessionRes?.data?.session;
+    if (!session) {
+      console.warn('No active auth session');
+      currentUser.value = null;
+      currentUserDiscordId.value = '';
+      newRecord.value.user_id = '';
+      whitelisted.value = false;
       return;
     }
-    currentUser.value = data.user;
 
-    const discordId = data.user?.identities?.[0]?.id ?? '';
+    const user = session.user ?? null;
+    currentUser.value = user;
+
+    const discordId = (user?.identities && user.identities[0]?.id) || user?.user_metadata?.provider_id || '';
     currentUserDiscordId.value = discordId;
     newRecord.value.user_id = discordId;
 
@@ -129,6 +159,9 @@ const loadCurrentUser = async () => {
   } catch (e) {
     console.error('loadCurrentUser error:', e);
     whitelisted.value = false;
+    currentUser.value = null;
+    currentUserDiscordId.value = '';
+    newRecord.value.user_id = '';
   }
 };
 
@@ -136,11 +169,21 @@ const loadCurrentUser = async () => {
 const softDeleteRecord = async (id) => {
   try {
     const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    }
     const res = await fetch(url, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify({ status: 'deleted' }),
     })
+    if (res.status === 403) {
+      alert('この操作には管理者権限が必要です（403）。')
+      return
+    }
     if (!res.ok) {
       console.error('記録の論理削除に失敗しました:', await res.text())
       return
@@ -153,6 +196,20 @@ const softDeleteRecord = async (id) => {
 
 onMounted(async () => {
   await loadCurrentUser();
+  // 管理者権限チェック
+  if (currentUserDiscordId.value) {
+    const ok = await checkWhitelist(currentUserDiscordId.value)
+    whitelisted.value = ok
+    if (!ok) {
+      accessDenied.value = true
+      loading.value = false
+      return
+    }
+  } else {
+    accessDenied.value = true
+    loading.value = false
+    return
+  }
   await fetchRecords();
 });
 

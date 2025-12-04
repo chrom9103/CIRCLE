@@ -1,7 +1,6 @@
 <script setup>
 import { useAuthStore } from '../stores/auth';
 
-import HeaderLayout from '../components/HeaderLayout.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import TheWelcome from '../components/TheWelcome.vue'
 
@@ -9,7 +8,6 @@ const auth = useAuthStore();
 </script>
 
 <template>
-  <HeaderLayout />
   <header>
     <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="125" height="125" />
 

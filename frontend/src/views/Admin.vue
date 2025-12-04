@@ -31,13 +31,13 @@
     </ul>
 
     <!-- 管理者/メンバー同期ボタン -->
-    <div style="margin: 1rem 0;">
-      <button @click="syncAdmins" :disabled="syncingAdmins">管理者(sync admin_list)</button>
-      <button @click="syncMembers" :disabled="syncingMembers" style="margin-left: 0.5rem;">メンバー(sync member_list)</button>
-      <span v-if="syncMessage" style="margin-left:0.75rem">{{ syncMessage }}</span>
-    </div>
-
-    <p>aaaa</p>
+    <AdminSyncControls
+      @sync-admins="syncAdmins"
+      @sync-members="syncMembers"
+      :syncing-admins="syncingAdmins"
+      :syncing-members="syncingMembers"
+      :sync-message="syncMessage"
+    />
 
     </div>
   </div>
@@ -47,6 +47,7 @@
 import { ref, onMounted, computed } from 'vue';
 import AdminGate from '../components/AdminGate.vue'
 import AccessNotice from '../components/AccessNotice.vue'
+import AdminSyncControls from '../components/admin/AdminSyncControls.vue'
 import { supabase } from '../supabase'; 
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -138,7 +139,6 @@ const softDeleteRecord = async (id) => {
 
 onMounted(() => {})
 
-// 管理者同期をトリガー
 const syncAdmins = async () => {
   syncingAdmins.value = true;
   syncMessage.value = '';

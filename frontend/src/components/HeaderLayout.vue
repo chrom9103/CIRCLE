@@ -14,9 +14,9 @@
 
       <div v-if="showMenu" class="mobile-menu">
         <router-link to="/" class="mobile-link" @click="toggleMenu">ホーム</router-link>
+        <router-link to="/record" class="mobile-link" @click="toggleMenu">記録</router-link>
+        <router-link to="/admin" class="mobile-link" @click="toggleMenu">管理</router-link>
         <router-link to="/dashboard" class="mobile-link" @click="toggleMenu">ダッシュボード</router-link>
-        <router-link to="/settings" class="mobile-link" @click="toggleMenu">設定</router-link>
-        <a href="#" class="mobile-link" @click.prevent="signOut">サインアウト</a>
       </div>
       <button class="signout" @click="signOut">Sign Out</button>
 

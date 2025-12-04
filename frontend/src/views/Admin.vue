@@ -17,6 +17,7 @@
       </div>
 
     <!-- 記録一覧 -->
+    <AdminGate @ready="onAdminReady" />
     <ul>
       <li v-for="record in activeRecords" :key="record.transaction_id">
         <div>
@@ -50,6 +51,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import AdminGate from '../components/AdminGate.vue'
 import { supabase } from '../supabase'; 
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -97,73 +99,18 @@ const fetchRecords = async () => {
   }
 };
 
-// admin_list テーブルに discord_id が存在するか確認
-const checkWhitelist = async (discordId) => {
-  if (!discordId) return false;
-  whitelistChecking.value = true;
-  try {
-    const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_admin?discord_id=${encodeURIComponent(discordId)}`
-    // attach auth token if available
-    const sessionRes = await supabase.auth.getSession()
-    const token = sessionRes?.data?.session?.access_token
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await fetch(url, { headers })
-    if (!res.ok) {
-      const text = await res.text()
-      console.error('admin check failed:', res.status, text)
-      return false
-    }
-    const ct = res.headers.get('content-type') || ''
-    if (!ct.includes('application/json')) {
-      const text = await res.text()
-      console.error('is_admin: expected JSON but got', ct, text?.slice(0, 300))
-      return false
-    }
-    const json = await res.json()
-    return !!json.is_admin
-  } catch (e) {
-    console.error('checkWhitelist exception:', e);
-    return false;
-  } finally {
-    whitelistChecking.value = false;
-  }
-}
-
 // newRecord.user_id に Discord の id を設定し、ホワイトリスト確認
-const loadCurrentUser = async () => {
-  try {
-    const sessionRes = await supabase.auth.getSession();
-    const session = sessionRes?.data?.session;
-    if (!session) {
-      console.warn('No active auth session');
-      currentUser.value = null;
-      currentUserDiscordId.value = '';
-      newRecord.value.user_id = '';
-      whitelisted.value = false;
-      return;
-    }
-
-    const user = session.user ?? null;
-    currentUser.value = user;
-
-    const discordId = (user?.identities && user.identities[0]?.id) || user?.user_metadata?.provider_id || '';
-    currentUserDiscordId.value = discordId;
-    newRecord.value.user_id = discordId;
-
-    // ホワイトリスト確認
-    if (discordId) {
-      whitelisted.value = await checkWhitelist(discordId);
-    } else {
-      whitelisted.value = false;
-    }
-  } catch (e) {
-    console.error('loadCurrentUser error:', e);
-    whitelisted.value = false;
-    currentUser.value = null;
-    currentUserDiscordId.value = '';
-    newRecord.value.user_id = '';
+const onAdminReady = async ({ allowed, discordId, token }) => {
+  currentUserDiscordId.value = discordId || ''
+  newRecord.value.user_id = discordId || ''
+  whitelisted.value = !!allowed
+  accessDenied.value = !allowed
+  if (!allowed) {
+    return
   }
-};
+  // if allowed, fetch records
+  await fetchRecords()
+}
 
 // 記録を論理削除（バックエンド経由）
 const softDeleteRecord = async (id) => {
@@ -194,24 +141,7 @@ const softDeleteRecord = async (id) => {
   }
 };
 
-onMounted(async () => {
-  await loadCurrentUser();
-  // 管理者権限チェック
-  if (currentUserDiscordId.value) {
-    const ok = await checkWhitelist(currentUserDiscordId.value)
-    whitelisted.value = ok
-    if (!ok) {
-      accessDenied.value = true
-      loading.value = false
-      return
-    }
-  } else {
-    accessDenied.value = true
-    loading.value = false
-    return
-  }
-  await fetchRecords();
-});
+onMounted(() => {})
 
 // 管理者同期をトリガー
 const syncAdmins = async () => {

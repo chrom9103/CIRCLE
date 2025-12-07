@@ -12,7 +12,8 @@
         <span aria-hidden="true"></span>
       </button>
 
-      <div v-if="showMenu" class="mobile-menu" role="menu">
+      <div v-if="showMenu" class="mobile-backdrop" @click="toggleMenu"></div>
+      <div v-if="showMenu" class="mobile-menu" role="menu" @click.stop>
         <router-link to="/" class="mobile-link" @click="toggleMenu" role="menuitem">ホーム</router-link>
         <router-link to="/record" class="mobile-link" @click="toggleMenu" role="menuitem">記録</router-link>
         <router-link to="/admin" class="mobile-link" @click="toggleMenu" role="menuitem">管理</router-link>
@@ -21,17 +22,19 @@
       </div>
 
       <div class="user-wrap">
-        <router-link v-if="auth.user" to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">
+        <router-link v-if="auth.user" to="/dashboard">
           <img :src="userAvatar" alt="User Avatar" class="avatar" />
         </router-link>
-        <img v-else :src="userAvatar" alt="User Avatar" class="avatar" />
+        <router-link v-else to="/signin">
+          <img :src="userAvatar" alt="User Avatar" class="avatar" />
+        </router-link>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { supabase } from '../supabase'
 
@@ -66,6 +69,21 @@ onMounted(async () => {
   } catch (e) {
     console.warn('Failed to load supabase user for avatar', e)
   }
+})
+
+// close mobile menu on Escape key
+function onKeydown(e) {
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    if (showMenu.value) showMenu.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
 })
 
 const userAvatar = computed(() => {
@@ -199,6 +217,13 @@ const userAvatar = computed(() => {
   min-width: 160px;
   z-index: 1000;
   pointer-events: auto;
+}
+
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+  z-index: 900;
 }
 
 .mobile-link {

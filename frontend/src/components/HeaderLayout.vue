@@ -21,10 +21,12 @@
       </div>
 
       <div class="user-wrap">
-        <router-link v-if="auth.user" to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">
+        <router-link v-if="auth.user" to="/dashboard">
           <img :src="userAvatar" alt="User Avatar" class="avatar" />
         </router-link>
-        <img v-else :src="userAvatar" alt="User Avatar" class="avatar" />
+        <router-link v-else to="/signin">
+          <img :src="userAvatar" alt="User Avatar" class="avatar" />
+        </router-link>
       </div>
     </div>
   </header>

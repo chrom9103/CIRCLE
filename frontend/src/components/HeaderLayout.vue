@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from '../stores/auth'
 import { supabase } from '../supabase'
 
@@ -69,6 +69,21 @@ onMounted(async () => {
   } catch (e) {
     console.warn('Failed to load supabase user for avatar', e)
   }
+})
+
+// close mobile menu on Escape key
+function onKeydown(e) {
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    if (showMenu.value) showMenu.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', onKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onKeydown)
 })
 
 const userAvatar = computed(() => {

@@ -12,7 +12,8 @@
         <span aria-hidden="true"></span>
       </button>
 
-      <div v-if="showMenu" class="mobile-menu" role="menu">
+      <div v-if="showMenu" class="mobile-backdrop" @click="toggleMenu"></div>
+      <div v-if="showMenu" class="mobile-menu" role="menu" @click.stop>
         <router-link to="/" class="mobile-link" @click="toggleMenu" role="menuitem">ホーム</router-link>
         <router-link to="/record" class="mobile-link" @click="toggleMenu" role="menuitem">記録</router-link>
         <router-link to="/admin" class="mobile-link" @click="toggleMenu" role="menuitem">管理</router-link>
@@ -201,6 +202,13 @@ const userAvatar = computed(() => {
   min-width: 160px;
   z-index: 1000;
   pointer-events: auto;
+}
+
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+  z-index: 900;
 }
 
 .mobile-link {

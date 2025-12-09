@@ -12,7 +12,13 @@
       <div class="steps">
         <div class="step">
           <div class="icon-wrap">
-            <div class="icon">⤴️</div>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-in w-10 h-10 text-gray-900" aria-hidden="true">
+                    <path d="m10 17 5-5-5-5"></path>
+                    <path d="M15 12H3"></path>
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                </svg>
+            </div>
             <div class="badge">1</div>
           </div>
           <h3>Discordでサインイン</h3>
@@ -21,7 +27,15 @@
 
         <div class="step">
           <div class="icon-wrap">
-            <div class="icon">🧾</div>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text w-10 h-10 text-gray-900" aria-hidden="true">
+                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"></path>
+                    <path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+                    <path d="M10 9H8"></path>
+                    <path d="M16 13H8"></path>
+                    <path d="M16 17H8"></path>
+                </svg>
+            </div>
             <div class="badge">2</div>
           </div>
           <h3>収支を記録</h3>
@@ -30,7 +44,14 @@
 
         <div class="step">
           <div class="icon-wrap">
-            <div class="icon">👥</div>
+            <div class="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-10 h-10 text-gray-900" aria-hidden="true">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                    <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                </svg>
+            </div>
             <div class="badge">3</div>
           </div>
           <h3>メンバーと共有</h3>

@@ -139,7 +139,7 @@ function formatDate(d) {
 
 .record-card__body { padding: 0.5rem 0.75rem 0.75rem 0.75rem; background: #fbfbfe; border-top: 1px solid #eef2ff; display: flex; flex-direction: column; gap: 0.5rem; }
 .record-detail { font-size: 0.9rem; color: #334155; }
-.details-actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+.details-actions { display: flex; gap: 0.5rem; }
 
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
 /* Icon button for actions */

@@ -36,7 +36,6 @@ import { supabase } from '../supabase';
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
 
 const records = ref([]);
-const currentUser = ref(null);
 const currentUserDiscordId = ref('');
 const newRecord = ref({
     purpose: '',
@@ -48,7 +47,6 @@ const newRecord = ref({
 const loading = ref(false);
 
 const whitelisted = ref(false);
-const whitelistChecking = ref(false);
 const accessDenied = ref(false);
 
 const activeRecords = computed(() => {

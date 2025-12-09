@@ -93,7 +93,10 @@ function formatDate(d) {
   try {
     const t = new Date(d)
     if (Number.isNaN(t.getTime())) return String(d)
-    return t.toLocaleString()
+    const y = t.getFullYear()
+    const m = String(t.getMonth() + 1).padStart(2, '0')
+    const day = String(t.getDate()).padStart(2, '0')
+    return `${y}/${m}/${day}`
   } catch (_) {
     return String(d)
   }

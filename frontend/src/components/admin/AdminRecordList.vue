@@ -1,8 +1,3 @@
-<style scoped>
-    ul { list-style: none; padding: 0; }
-    li { margin-bottom: 1rem; padding: 0.5rem; border: 1px solid #eee; border-radius: 6px; }
-    button { margin-top: 0.5rem; }
-</style>
 <template>
   <div class="record-list-wrapper">
     <div v-if="loading">
@@ -97,8 +92,8 @@ function formatDate(d) {
 </script>
 
 <style scoped>
-.table-scroll { overflow-x: auto; }
-.records-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.record-list-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.records-table { width: 100%; border-collapse: collapse; min-width: 896px; }
 .records-table th, .records-table td { padding: 0.5rem 0.75rem; border: 1px solid #e6e6e6; text-align: left; vertical-align: top; }
 .records-table th { background: #fafafa; font-weight: 700; font-size: 0.95rem; }
 .records-table td.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace; font-size: 0.85rem; }
@@ -108,7 +103,9 @@ function formatDate(d) {
 .status-badge.processed { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
 .status-badge.deleted { background: #fff1f0; color: #9b1b1b; border: 1px solid #f5c2c0; }
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
-@media (max-width: 720px) {
-  .records-table { min-width: 720px; }
+
+@media (max-width: 895px) {
+  .records-table { min-width: 896px; }
 }
 </style>
+

@@ -12,23 +12,7 @@
 
     <!-- 記録一覧 -->
     <AdminGate @ready="onAdminReady" />
-    <ul>
-      <li v-for="record in activeRecords" :key="record.transaction_id">
-        <div>
-            <!-- 金額と用途を表示 -->
-            <span :class="{'text-red-600': record.record_type === 'Expense', 'text-green-600': record.record_type === 'Revenue'}">
-                {{ record.record_type === 'Expense' ? 'ー' : '＋' }} {{ record.amount.toLocaleString() }} 円
-            </span>
-            <span >| {{ record.purpose }}</span>
-            <p>カテゴリ: {{ record.category }} / ID: {{ record.transaction_id.substring(0, 8) }}...</p>
-        </div>
-        
-        <!-- 論理削除ボタン -->
-        <button @click="softDeleteRecord(record.transaction_id)">
-            取消済にする
-        </button>
-      </li>
-    </ul>
+    <AdminRecordList :records="activeRecords" :loading="loading" @soft-delete="softDeleteRecord" />
 
     <!-- 管理者/メンバー同期ボタン -->
     <AdminSyncControls @synced="() => fetchRecords()" />
@@ -42,6 +26,7 @@ import { ref, onMounted, computed } from 'vue';
 import AdminGate from '../components/AdminGate.vue'
 import AccessNotice from '../components/AccessNotice.vue'
 import AdminSyncControls from '../components/admin/AdminSyncControls.vue'
+import AdminRecordList from '../components/admin/AdminRecordList.vue'
 import { supabase } from '../supabase'; 
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''

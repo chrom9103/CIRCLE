@@ -42,8 +42,8 @@
               <td>{{ formatDate(record.created_at) }}</td>
               <td>
                 <button class="small" @click="onSoftDelete(record.transaction_id)">取消済にする</button>
-                <button class="small" style="margin-left:0.5rem" @click="onMarkProcessed(record.transaction_id)">清算済みにする</button>
-                <button class="small" style="margin-left:0.5rem" @click="onMarkUnprocessed(record.transaction_id)">未清算にする</button>
+                <button v-if="record.status !== 'processed'" class="small" style="margin-left:0.5rem" @click="onMarkProcessed(record.transaction_id)">清算済みにする</button>
+                <button v-if="record.status !== 'active'" class="small" style="margin-left:0.5rem" @click="onMarkUnprocessed(record.transaction_id)">未清算にする</button>
               </td>
             </tr>
           </tbody>

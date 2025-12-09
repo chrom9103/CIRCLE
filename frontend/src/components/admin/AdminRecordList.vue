@@ -122,10 +122,10 @@ function formatDate(d) {
 .record-list-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 8px; }
 
 /* Stack container */
-.records-stack { display: flex; flex-direction: column; gap: 0.75rem; max-width: 100%; }
+.records-stack { display: flex; flex-direction: column; gap: 0.75rem; max-width: 100%; align-items: center; }
 
 /* Card */
-.record-card { background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); overflow: hidden; }
+.record-card { background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); overflow: hidden; width: 100%; max-width: 900px; margin: 0 auto; }
 .record-card__header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; gap: 0.5rem; }
 .record-card__left { display: flex; flex-direction: column; }
 .record-purpose { font-weight: 600; color: #0f172a; }

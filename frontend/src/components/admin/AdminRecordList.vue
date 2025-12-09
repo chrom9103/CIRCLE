@@ -14,7 +14,7 @@
                 <div class="record-meta">{{ record.category || '' }}</div>
               </div>
               <div class="record-card__right">
-                <div class="record-amount">{{ formatAmount(record.amount) }}</div>
+                <div :class="['record-amount', amountClass(record)]">{{ formatAmount(record.amount) }}</div>
                 <div class="record-date">{{ formatDate(record.created_at) }}</div>
                 <div class="details-actions">
                   <button class="small icon-btn" @click="onSoftDelete(record.transaction_id)" title="取消済にする"><img :src="trashIcon" alt="取消" /></button>
@@ -76,6 +76,14 @@ function isExpanded(id) {
   return expanded.value.includes(id)
 }
 
+function amountClass(record) {
+  const amt = Number(record?.amount)
+  if (!Number.isNaN(amt) && amt < 0) return 'expense'
+  const t = String(record?.record_type || '').toLowerCase()
+  if (t.includes('expense') || t.includes('支出') || t.includes('歳出')) return 'expense'
+  return 'income'
+}
+
 function onSoftDelete(id) {
   emit('soft-delete', id)
 }
@@ -124,6 +132,8 @@ function formatDate(d) {
 .record-meta { font-size: 0.85rem; color: #6b7280; }
 .record-card__right { display: flex; align-items: center; gap: 0.75rem; }
 .record-amount { font-weight: 700; color: #0b5; min-width: 90px; text-align: right; }
+.record-amount.income { color: #059669; }
+.record-amount.expense { color: #dc2626; }
 .record-date { font-size: 0.85rem; color: #6b7280; white-space: nowrap; }
 .expand-btn { background: transparent; border: none; padding: 4px 8px; cursor: pointer; color: #374151; font-size: 24px; }
 

@@ -36,9 +36,15 @@
               </td>
               <td>{{ formatDate(record.created_at) }}</td>
               <td>
-                <button class="small" @click="onSoftDelete(record.transaction_id)">取消済にする</button>
-                <button v-if="record.status !== 'processed'" class="small" style="margin-left:0.5rem" @click="onMarkProcessed(record.transaction_id)">清算済みにする</button>
-                <button v-if="record.status !== 'active'" class="small" style="margin-left:0.5rem" @click="onMarkUnprocessed(record.transaction_id)">未清算にする</button>
+                <button class="small icon-btn" @click="onSoftDelete(record.transaction_id)" title="取消済にする">
+                  <img :src="trashIcon" alt="取消" />
+                </button>
+                <button v-if="record.status !== 'processed'" class="small icon-btn" @click="onMarkProcessed(record.transaction_id)" title="清算済みにする">
+                  <img :src="proceedIcon" alt="清算済みにする" />
+                </button>
+                <button v-if="record.status !== 'active'" class="small icon-btn" @click="onMarkUnprocessed(record.transaction_id)" title="未清算にする">
+                  <img :src="activeIcon" alt="未清算にする" />
+                </button>
               </td>
             </tr>
           </tbody>
@@ -52,6 +58,9 @@
 
 <script setup>
 import { defineProps, defineEmits } from 'vue'
+import trashIcon from '../../assets/admin/trash-box.png'
+import activeIcon from '../../assets/admin/active-icon.jpg'
+import proceedIcon from '../../assets/admin/proceed-icon.jpg'
 
 const props = defineProps({
   records: { type: Array, default: () => [] },
@@ -103,6 +112,11 @@ function formatDate(d) {
 .status-badge.processed { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
 .status-badge.deleted { background: #fff1f0; color: #9b1b1b; border: 1px solid #f5c2c0; }
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
+
+/* Icon button for actions */
+.icon-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.25rem; border: 1px solid transparent; background: transparent; border-radius: 6px; cursor: pointer; }
+.icon-btn img { width: 20px; height: 20px; display: block; }
+.icon-btn + .icon-btn { margin-left: 0.5rem; }
 
 @media (max-width: 895px) {
   .records-table { min-width: 896px; }

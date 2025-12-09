@@ -42,6 +42,7 @@
               <td>{{ formatDate(record.created_at) }}</td>
               <td>
                 <button class="small" @click="onSoftDelete(record.transaction_id)">取消済にする</button>
+                <button class="small" style="margin-left:0.5rem" @click="onMarkProcessed(record.transaction_id)">清算済みにする</button>
               </td>
             </tr>
           </tbody>
@@ -61,10 +62,14 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['soft-delete'])
+const emit = defineEmits(['soft-delete', 'mark-processed'])
 
 function onSoftDelete(id) {
   emit('soft-delete', id)
+}
+
+function onMarkProcessed(id) {
+  emit('mark-processed', id)
 }
 
 function formatAmount(v) {

@@ -12,7 +12,10 @@
 
     <!-- 記録一覧 -->
     <AdminGate @ready="onAdminReady" />
-    <AdminRecordList :records="activeRecords" :loading="loading" @soft-delete="softDeleteRecord" />
+    <AdminRecordList :records="activeRecords" :loading="loading" 
+      @soft-delete="softDeleteRecord"
+      @mark-processed="markProcessedRecord"
+    />
 
     <!-- 管理者/メンバー同期ボタン -->
     <AdminSyncControls @synced="() => fetchRecords()" />
@@ -110,6 +113,35 @@ const softDeleteRecord = async (id) => {
     await fetchRecords()
   } catch (e) {
     console.error('記録の論理削除に失敗しました:', e)
+  }
+};
+
+// 記録を清算済みにする（status=processed）
+const markProcessedRecord = async (id) => {
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    }
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'processed' }),
+    })
+    if (res.status === 403) {
+      alert('この操作には管理者権限が必要です（403）。')
+      return
+    }
+    if (!res.ok) {
+      console.error('記録の清算更新に失敗しました:', await res.text())
+      return
+    }
+    await fetchRecords()
+  } catch (e) {
+    console.error('記録の清算更新に失敗しました:', e)
   }
 };
 

@@ -58,9 +58,9 @@
 
 <script setup>
 import { defineProps, defineEmits } from 'vue'
-import trashIcon from '../../assets/admin/trash-box.png'
-import activeIcon from '../../assets/admin/active-icon.jpg'
-import proceedIcon from '../../assets/admin/proceed-icon.jpg'
+import trashIcon from '../../assets/admin/trashcan-icon.png'
+import activeIcon from '../../assets/admin/active-icon.png'
+import proceedIcon from '../../assets/admin/proceed-icon.png'
 
 const props = defineProps({
   records: { type: Array, default: () => [] },

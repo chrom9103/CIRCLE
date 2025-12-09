@@ -15,6 +15,7 @@
     <AdminRecordList :records="activeRecords" :loading="loading" 
       @soft-delete="softDeleteRecord"
       @mark-processed="markProcessedRecord"
+      @mark-unprocessed="markUnprocessedRecord"
     />
 
     <!-- 管理者/メンバー同期ボタン -->
@@ -141,6 +142,35 @@ const markProcessedRecord = async (id) => {
     await fetchRecords()
   } catch (e) {
     console.error('記録の清算更新に失敗しました:', e)
+  }
+};
+
+// 記録を未清算（status=active）に戻す
+const markUnprocessedRecord = async (id) => {
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    }
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'active' }),
+    })
+    if (res.status === 403) {
+      alert('この操作には管理者権限が必要です（403）。')
+      return
+    }
+    if (!res.ok) {
+      console.error('記録の状態更新に失敗しました:', await res.text())
+      return
+    }
+    await fetchRecords()
+  } catch (e) {
+    console.error('記録の状態更新に失敗しました:', e)
   }
 };
 

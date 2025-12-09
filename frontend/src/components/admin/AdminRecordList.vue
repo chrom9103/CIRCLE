@@ -43,6 +43,7 @@
               <td>
                 <button class="small" @click="onSoftDelete(record.transaction_id)">取消済にする</button>
                 <button class="small" style="margin-left:0.5rem" @click="onMarkProcessed(record.transaction_id)">清算済みにする</button>
+                <button class="small" style="margin-left:0.5rem" @click="onMarkUnprocessed(record.transaction_id)">未清算にする</button>
               </td>
             </tr>
           </tbody>
@@ -62,7 +63,7 @@ const props = defineProps({
   loading: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['soft-delete', 'mark-processed'])
+const emit = defineEmits(['soft-delete', 'mark-processed', 'mark-unprocessed'])
 
 function onSoftDelete(id) {
   emit('soft-delete', id)
@@ -70,6 +71,10 @@ function onSoftDelete(id) {
 
 function onMarkProcessed(id) {
   emit('mark-processed', id)
+}
+
+function onMarkUnprocessed(id) {
+  emit('mark-unprocessed', id)
 }
 
 function formatAmount(v) {

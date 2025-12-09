@@ -100,6 +100,7 @@ function formatDate(d) {
 .records-table td.purpose { max-width: 360px; white-space: pre-wrap; word-break: break-word; }
 .status-badge { padding: 0.15rem 0.5rem; border-radius: 6px; font-size: 0.8rem; display: inline-block; }
 .status-badge.active { background: #e6ffed; color: #036a2a; border: 1px solid #c2f0d0; }
+.status-badge.processed { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
 .status-badge.deleted { background: #fff1f0; color: #9b1b1b; border: 1px solid #f5c2c0; }
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
 @media (max-width: 720px) {

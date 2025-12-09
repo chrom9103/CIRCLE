@@ -50,9 +50,8 @@ const whitelisted = ref(false);
 const whitelistChecking = ref(false);
 const accessDenied = ref(false);
 
-// status='active' の記録のみを表示
 const activeRecords = computed(() => {
-    return records.value.filter(r => r.status === 'active');
+  return records.value.filter(r => r.status !== 'deleted');
 });
 
 // DBから記録を取得

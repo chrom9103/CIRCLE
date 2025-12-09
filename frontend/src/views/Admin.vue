@@ -12,23 +12,11 @@
 
     <!-- 記録一覧 -->
     <AdminGate @ready="onAdminReady" />
-    <ul>
-      <li v-for="record in activeRecords" :key="record.transaction_id">
-        <div>
-            <!-- 金額と用途を表示 -->
-            <span :class="{'text-red-600': record.record_type === 'Expense', 'text-green-600': record.record_type === 'Revenue'}">
-                {{ record.record_type === 'Expense' ? 'ー' : '＋' }} {{ record.amount.toLocaleString() }} 円
-            </span>
-            <span >| {{ record.purpose }}</span>
-            <p>カテゴリ: {{ record.category }} / ID: {{ record.transaction_id.substring(0, 8) }}...</p>
-        </div>
-        
-        <!-- 論理削除ボタン -->
-        <button @click="softDeleteRecord(record.transaction_id)">
-            取消済にする
-        </button>
-      </li>
-    </ul>
+    <AdminRecordList :records="activeRecords" :loading="loading" 
+      @soft-delete="softDeleteRecord"
+      @mark-processed="markProcessedRecord"
+      @mark-unprocessed="markUnprocessedRecord"
+    />
 
     <!-- 管理者/メンバー同期ボタン -->
     <AdminSyncControls @synced="() => fetchRecords()" />
@@ -42,6 +30,7 @@ import { ref, onMounted, computed } from 'vue';
 import AdminGate from '../components/AdminGate.vue'
 import AccessNotice from '../components/AccessNotice.vue'
 import AdminSyncControls from '../components/admin/AdminSyncControls.vue'
+import AdminRecordList from '../components/admin/AdminRecordList.vue'
 import { supabase } from '../supabase'; 
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -62,9 +51,8 @@ const whitelisted = ref(false);
 const whitelistChecking = ref(false);
 const accessDenied = ref(false);
 
-// status='active' の記録のみを表示
 const activeRecords = computed(() => {
-    return records.value.filter(r => r.status === 'active');
+  return records.value.filter(r => r.status !== 'deleted');
 });
 
 // DBから記録を取得
@@ -125,6 +113,64 @@ const softDeleteRecord = async (id) => {
     await fetchRecords()
   } catch (e) {
     console.error('記録の論理削除に失敗しました:', e)
+  }
+};
+
+// 記録を清算済みにする（status=processed）
+const markProcessedRecord = async (id) => {
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    }
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'processed' }),
+    })
+    if (res.status === 403) {
+      alert('この操作には管理者権限が必要です（403）。')
+      return
+    }
+    if (!res.ok) {
+      console.error('記録の清算更新に失敗しました:', await res.text())
+      return
+    }
+    await fetchRecords()
+  } catch (e) {
+    console.error('記録の清算更新に失敗しました:', e)
+  }
+};
+
+// 記録を未清算（status=active）に戻す
+const markUnprocessedRecord = async (id) => {
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/records/${encodeURIComponent(id)}`
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    }
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({ status: 'active' }),
+    })
+    if (res.status === 403) {
+      alert('この操作には管理者権限が必要です（403）。')
+      return
+    }
+    if (!res.ok) {
+      console.error('記録の状態更新に失敗しました:', await res.text())
+      return
+    }
+    await fetchRecords()
+  } catch (e) {
+    console.error('記録の状態更新に失敗しました:', e)
   }
 };
 

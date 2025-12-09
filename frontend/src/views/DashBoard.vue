@@ -2,19 +2,28 @@
 import { onMounted, ref, onUnmounted } from 'vue';
 import { supabase } from '../supabase';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const router = useRouter();
+const auth = useAuthStore();
 const user = ref(null);
 
 const handleSignOut = async () => {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        router.push({
-            name: 'home',
-        });
+
+        if (auth && typeof auth.clearUser === 'function') {
+            try { auth.clearUser() } catch (e) { /* ignore */ }
+        }
+
+        try {
+            window.location.href = window.location.origin + '/';
+        } catch (_) {
+            router.replace({ name: 'home' });
+        }
     } catch (error) {
-        alert(error.message);
+        alert(error.message || 'サインアウトに失敗しました');
     }
 };
 

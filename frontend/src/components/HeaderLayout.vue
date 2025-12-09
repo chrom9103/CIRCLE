@@ -46,14 +46,24 @@ function toggleMenu() {
   showMenu.value = !showMenu.value
 }
 
-function signOut() {
-  if (auth && typeof auth.signOut === 'function') {
-    auth.signOut()
-  } else if (supabase && supabase.auth) {
-    // fallback: supabase auth signOut
-    supabase.auth.signOut().catch((e) => console.log('supabase signOut error', e))
-  } else {
-    console.log('signOut not implemented on auth store')
+async function signOut() {
+  try {
+    if (auth && typeof auth.signOut === 'function') {
+      await auth.signOut()
+    } else if (supabase && supabase.auth && typeof supabase.auth.signOut === 'function') {
+      await supabase.auth.signOut()
+    } else {
+      console.log('signOut not implemented on auth store or supabase')
+    }
+
+    // Clear local auth store state
+    if (auth && typeof auth.clearUser === 'function') {
+      try { auth.clearUser() } catch (e) { /* ignore */ }
+    }
+    window.location.href = window.location.origin + window.location.pathname
+  } catch (e) {
+    console.error('Failed to sign out:', e)
+    try { window.location.href = '/signin' } catch (_) { /* noop */ }
   }
 }
 

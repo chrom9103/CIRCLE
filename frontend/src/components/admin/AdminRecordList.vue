@@ -35,7 +35,7 @@
                 <span :class="['status-badge', record.status]">{{ record.status || '-' }}</span>
               </td>
               <td>{{ formatDate(record.created_at) }}</td>
-              <td>
+              <td class="actions">
                 <button class="small icon-btn" @click="onSoftDelete(record.transaction_id)" title="取消済にする">
                   <img :src="trashIcon" alt="取消" />
                 </button>
@@ -112,7 +112,7 @@ function formatDate(d) {
 .status-badge.processed { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
 .status-badge.deleted { background: #fff1f0; color: #9b1b1b; border: 1px solid #f5c2c0; }
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
-
+.actions { min-width:95px; width:95px; max-width:95px; }
 /* Icon button for actions */
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.25rem; border: 1px solid transparent; background: transparent; border-radius: 6px; cursor: pointer; }
 .icon-btn img { width: 20px; height: 20px; display: block; }

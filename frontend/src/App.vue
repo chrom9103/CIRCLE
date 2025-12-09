@@ -28,6 +28,14 @@ onMounted(async () => {
 
 <template>
   <HeaderLayout />
-  <RouterView>
-  </RouterView>
+  <div class="app-router-view">
+    <RouterView />
+  </div>
 </template>
+
+<style scoped>
+.app-router-view {
+  padding: 10px;
+  box-sizing: border-box;
+}
+</style>

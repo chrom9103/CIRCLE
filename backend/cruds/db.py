@@ -13,7 +13,11 @@ def _resp_to_tuple(resp):
 
 
 def fetch_records_sorted() -> List[dict]:
-    resp = supabase.from_("financial_records").select("*").execute()
+    base_q = supabase.from_("financial_records").select("*")
+    if hasattr(base_q, "order"):
+        resp = base_q.order("created_at", desc=True).limit(64).execute()
+    else:
+        resp = base_q.limit(100).execute()
     data, error = _resp_to_tuple(resp)
     if error:
         raise RuntimeError(str(error))

@@ -1,85 +1,22 @@
 <script setup>
-import { useAuthStore } from '../stores/auth';
-
-import HelloWorld from '../components/HelloWorld.vue'
-import TheWelcome from '../components/TheWelcome.vue'
-
-const auth = useAuthStore();
+import Hero from '../components/home/Hero.vue'
+import Features from '../components/home/Features.vue'
+import HowItWorks from '../components/home/HowItWorks.vue'
+import Footer from '../components/home/Footer.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="../assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main class="container">
-    <nav class="nav" role="navigation" aria-label="primary">
-      <router-link
-        v-if="auth.isLoggedIn"
-        to="/dashboard"
-        class="nav-link"
-      >Dashboard</router-link>
-
-      <router-link
-        v-else
-        to="/signin"
-        class="nav-link primary"
-      >Sign In</router-link>
-    </nav>
-
-    <TheWelcome />
-  </main>
+  <div>
+    <Hero />
+    <main>
+      <Features />
+      <HowItWorks />
+    </main>
+    <Footer />
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 1.5rem;
-}
-
-.nav {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.nav-link {
-  display: inline-block;
-  padding: 0.5rem 0.9rem;
-  border-radius: 6px;
-  text-decoration: none;
-  color: var(--text-color, #2d3748);
-  background: var(--nav-bg, transparent);
-  border: 1px solid transparent;
-  transition: background-color 0.15s ease, transform 0.08s ease;
-  font-weight: 600;
-}
-
-.nav-link:hover {
-  background: rgba(0,0,0,0.04);
-  transform: translateY(-1px);
-}
-
-.nav-link.primary {
-  background: var(--primary, #3b82f6);
-  color: white;
-  border-color: rgba(0,0,0,0.05);
-}
-
+:root { --container-max:1100px }
+.container { max-width: var(--container-max); margin: 2rem auto; padding:0 1rem }
 </style>

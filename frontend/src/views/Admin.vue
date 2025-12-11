@@ -12,7 +12,7 @@
 
     <!-- 記録一覧 -->
     <AdminGate @ready="onAdminReady" />
-    <AdminRecordList :records="activeRecords" :loading="loading" 
+    <AdminRecordList :records="activeRecordsLimited" :loading="loading" 
       @soft-delete="softDeleteRecord"
       @mark-processed="markProcessedRecord"
       @mark-unprocessed="markUnprocessedRecord"
@@ -52,6 +52,11 @@ const accessDenied = ref(false);
 const activeRecords = computed(() => {
   return records.value.filter(r => r.status !== 'deleted');
 });
+
+// 表示件数を制限
+const activeRecordsLimited = computed(() => {
+  return activeRecords.value.slice(0, 100)
+})
 
 // DBから記録を取得
 const fetchRecords = async () => {

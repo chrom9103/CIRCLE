@@ -19,10 +19,10 @@ function primaryAction() {
       <div class="hero-inner">
         <div class="hero-pill">PiedPiper青山テック愛好会 部内システム</div>
         <h2 class="hero-kicker">つながりを、<br>もっとシンプルに</h2>
-        <p class="hero-desc">CIRCLEは、PiedPiper青山テック愛好会の会計を管理する部内専用システムです。<br>Discordでサインインするだけで、すぐに使い始められます。</p>
+        <p class="hero-desc">PiedPiper青山テック愛好会の会計管理システムです。<br>Discordでサインインするだけで、すぐに使い始められます。</p>
 
         <div class="hero-ctas">
-          <button class="btn primary large" @click="primaryAction">Discordでサインイン →</button>
+          <button class="btn primary large" @click="primaryAction">{{ isLoggedIn ? '会計を記録する →' : 'Discordでサインイン →' }}</button>
           <button class="btn outline large">詳しく見る</button>
         </div>
       </div>

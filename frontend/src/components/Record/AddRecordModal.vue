@@ -1,0 +1,162 @@
+<script setup>
+import { ref, onMounted, computed } from 'vue';
+import { supabase } from '@/supabase'; 
+
+const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
+const emit = defineEmits(['close', 'saved'])
+
+const currentUserDiscordId = ref('');
+const whitelisted = ref(false);
+const whitelistChecking = ref(false);
+const isSubmitting = ref(false);
+
+const newRecord = ref({
+    purpose: '',
+    amount: null,
+    record_type: 'Expense',
+    category: '',
+    user_id: '', 
+});
+
+// バリデーション
+const isFormValid = computed(() => {
+    return newRecord.value.purpose.trim() !== '' &&
+           newRecord.value.amount !== null &&
+           newRecord.value.amount >= 0 &&
+           newRecord.value.record_type.trim() !== '' &&
+           newRecord.value.category.trim() !== '';
+});
+
+// ホワイトリストチェック (Record.vueから移植)
+const checkWhitelist = async (discordId) => {
+  if (!discordId) return false;
+  whitelistChecking.value = true;
+  try {
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_member?discord_id=${encodeURIComponent(discordId)}`
+    const res = await fetch(url)
+    if (!res.ok) return false
+    const json = await res.json()
+    return !!json.is_member
+  } catch (e) {
+    console.error('checkWhitelist exception:', e);
+    return false;
+  } finally {
+    whitelistChecking.value = false;
+  }
+};
+
+// ユーザー取得
+onMounted(async () => {
+  const { data } = await supabase.auth.getUser();
+  const discordId = data.user?.identities?.[0]?.id ?? '';
+  currentUserDiscordId.value = discordId;
+  newRecord.value.user_id = discordId;
+  
+  if (discordId) {
+    whitelisted.value = await checkWhitelist(discordId);
+  }
+});
+
+// 送信処理
+const submit = async () => {
+  if (!isFormValid.value || !whitelisted.value) return;
+  isSubmitting.value = true;
+
+  try {
+    const sessionRes = await supabase.auth.getSession()
+    const token = sessionRes?.data?.session?.access_token
+    const url = (BACKEND ? `${BACKEND}` : '') + '/api/records'
+    
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        ...newRecord.value,
+        status: 'active'
+      }),
+    })
+
+    if (!res.ok) throw new Error(await res.text())
+    
+    emit('saved') // 保存成功を親に通知
+    emit('close') // 閉じる
+  } catch (e) {
+    console.error('Error:', e)
+    alert('登録に失敗しました')
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+</script>
+
+<template>
+  <div class="modal-overlay" @click.self="emit('close')">
+    <div class="modal-content">
+      <h3>新規記録の追加</h3>
+      
+      <div v-if="whitelistChecking" class="loading-text">権限を確認中...</div>
+      
+      <div v-else-if="!whitelisted && currentUserDiscordId" class="error-box">
+        <p>あなたのIDはホワイトリストに登録されていないため、記録できません。</p>
+      </div>
+
+      <div v-else>
+        <div class="form-group">
+          <label>用途</label>
+          <input v-model="newRecord.purpose" placeholder="例: 備品購入" maxlength="50" class="input-field"/>
+        </div>
+
+        <div class="form-group">
+          <label>金額 (円)</label>
+          <input v-model.number="newRecord.amount" type="number" min="0" placeholder="0" class="input-field"/>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half">
+            <label>種別</label>
+            <select v-model="newRecord.record_type" class="input-field">
+              <option value="Expense">歳出 (Expense)</option>
+              <option value="Revenue">歳入 (Revenue)</option>
+            </select>
+          </div>
+          <div class="form-group half">
+            <label>カテゴリ</label>
+            <select v-model="newRecord.category" class="input-field">
+              <option value="">選択してください</option>
+              <option value="備品">備品</option>
+              <option value="交通費">交通費</option>
+              <option value="会費">会費</option>
+              <option value="雑費">雑費</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button @click="emit('close')" class="cancel-btn">キャンセル</button>
+          <button @click="submit" class="save-btn" :disabled="!isFormValid || isSubmitting">
+            {{ isSubmitting ? '送信中...' : '登録する' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+.modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 450px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+h3 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.form-group { margin-bottom: 15px; }
+.form-row { display: flex; gap: 10px; }
+.half { flex: 1; }
+label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; color: #555; }
+.input-field { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.cancel-btn { padding: 10px 20px; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; color: #475569; }
+.save-btn { padding: 10px 20px; background: #29B575; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; }
+.save-btn:disabled { background: #ccc; cursor: not-allowed; }
+.error-box { background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 6px; font-size: 0.9rem; }
+</style>

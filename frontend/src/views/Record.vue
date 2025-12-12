@@ -14,6 +14,11 @@ const loading = ref(false)
 const showModal = ref(false)
 const currentYear = ref('all')
 
+function onYearUpdate(y) {
+  currentYear.value = y
+  fetchTransactions()
+}
+
 async function fetchTransactions() {
   loading.value = true
   try {
@@ -80,7 +85,7 @@ onMounted(() => {
     <header class="record-header">
       <h1>記録</h1>
       <div class="header-actions">
-        <YearSelector :currentYear="currentYear" @update:year="(y) => { currentYear = y; fetchTransactions() }" />
+        <YearSelector :currentYear="currentYear" @update:year="onYearUpdate" />
         <button class="btn-add" @click="openModal">新規追加</button>
       </div>
     </header>

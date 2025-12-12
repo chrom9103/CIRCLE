@@ -14,6 +14,7 @@ const formatDate = (dateStr: string) => {
         <tr>
           <th>日付</th>
           <th>用途 / カテゴリ</th>
+          <th>証憑</th>
           <th class="text-right">金額</th>
         </tr>
       </thead>
@@ -26,13 +27,19 @@ const formatDate = (dateStr: string) => {
               <span class="category">{{ t.category }}</span>
             </div>
           </td>
+          <td class="evidence-col">
+            <div v-if="t.evidence_file_link">
+              <a :href="t.evidence_file_link" target="_blank" rel="noopener noreferrer">表示</a>
+            </div>
+            <div v-else>-</div>
+          </td>
           <td :class="['amount-col', (t.record_type || t.type || '').toLowerCase()]">
             {{ (t.record_type || t.type || '').toLowerCase().includes('revenue') ? '+' : '-' }} 
             ¥{{ Number(t.amount).toLocaleString() }}
           </td>
         </tr>
         <tr v-if="transactions.length === 0">
-          <td colspan="3" class="empty-state">データがありません</td>
+          <td colspan="4" class="empty-state">データがありません</td>
         </tr>
       </tbody>
     </table>

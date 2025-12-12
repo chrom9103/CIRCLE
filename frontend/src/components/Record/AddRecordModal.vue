@@ -16,6 +16,7 @@ const newRecord = ref({
     record_type: 'Expense',
     category: '',
     user_id: '', 
+    evidence_file_link: '',
 });
 
 // バリデーション
@@ -132,6 +133,11 @@ const submit = async () => {
               <option value="雑費">雑費</option>
             </select>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label>領収書リンク（任意）</label>
+          <input v-model="newRecord.evidence_file_link" placeholder="https://..." class="input-field" />
         </div>
 
         <div class="actions">

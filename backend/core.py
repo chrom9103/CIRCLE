@@ -35,11 +35,9 @@ def _load_env():
 
 _load_env()
 
-SUPABASE_URL: Optional[str] = os.environ.get("SUPABASE_URL") or os.environ.get("VITE_SUPABASE_URL")
+SUPABASE_URL: Optional[str] = os.environ.get("VITE_SUPABASE_URL")
 SUPABASE_KEY: Optional[str] = (
-    os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    or os.environ.get("SUPABASE_KEY")
-    or os.environ.get("VITE_SUPABASE_ANON_KEY")
+    os.environ.get("VITE_SUPABASE_ANON_KEY")
 )
 
 if not SUPABASE_URL or not SUPABASE_KEY:

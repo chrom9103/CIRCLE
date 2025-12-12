@@ -21,6 +21,9 @@ spec:
           env:
             - name: BACKEND_PORT
               value: "8081"
+          envFrom:
+            - secretRef:
+                name: circle-app-secret
           resources:
             requests:
               cpu: "100m"

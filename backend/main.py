@@ -44,6 +44,16 @@ app.add_middleware(
 )
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
+@app.get("/")
+def root():
+    return {"detail": "backend running"}
+
+
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(request, exc):
     print("RequestValidationError:", exc)

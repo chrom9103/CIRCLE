@@ -25,3 +25,18 @@ spec:
       port: 80
       targetPort: 80
   type: ClusterIP
+
+---
+# DNS alias service for frontend nginx upstream 'backend'
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: circle-backend
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP

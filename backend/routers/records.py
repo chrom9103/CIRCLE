@@ -17,6 +17,7 @@ class RecordIn(BaseModel):
     category: str
     purpose: str
     status: Optional[str] = "active"
+    evidence_file_link: Optional[str] = None
 
 
 @router.get("/api/records")

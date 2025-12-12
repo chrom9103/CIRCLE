@@ -16,6 +16,20 @@ spec:
                 name: circle-frontend-service
                 port:
                   number: 80
+          - path: /CIRCLE/assets
+            pathType: Prefix
+            backend:
+              service:
+                name: circle-frontend-service
+                port:
+                  number: 80
+          - path: /CIRCLE/favicon.ico
+            pathType: Prefix
+            backend:
+              service:
+                name: circle-frontend-service
+                port:
+                  number: 80
   tls:
     - hosts:
         - www.chrom.jp

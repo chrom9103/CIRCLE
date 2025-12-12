@@ -7,7 +7,7 @@ resources:
   - ingress.yaml
 
 secretGenerator:
-  - name: CIRCLE-secret
+  - name: circle-secret
     type: kubernetes.io/tls
     files:
       - tls.crt=secrets/tls.crt

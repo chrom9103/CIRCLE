@@ -43,6 +43,11 @@ async function fetchTransactions() {
 
     // If year filter is set, filter client-side by created_at year
     let items = Array.isArray(data) ? data : []
+    // Exclude records marked as deleted
+    items = items.filter((t) => {
+      const status = (t.status || '').toString().toLowerCase()
+      return status !== 'deleted'
+    })
     if (currentYear.value !== 'all') {
       const y = Number(currentYear.value)
       items = items.filter((t) => {

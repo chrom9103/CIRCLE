@@ -22,8 +22,7 @@
 <script setup>
 import { ref } from 'vue'
 import { supabase } from '../../supabase'
-
-const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
+import { BACKEND } from '@/runtimeConfig'
 
 const syncingAdmins = ref(false)
 const syncingMembers = ref(false)

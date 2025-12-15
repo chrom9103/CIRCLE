@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { supabase } from '@/supabase'; 
-
-const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
+import { BACKEND } from '@/runtimeConfig'
 const emit = defineEmits(['close', 'saved'])
 
 const currentUserDiscordId = ref('');

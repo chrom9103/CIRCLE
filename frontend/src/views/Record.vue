@@ -1,8 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from '../supabase'
-
-const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
+import { BACKEND } from '@/runtimeConfig'
 
 import AddRecordModal from '../components/Record/AddRecordModal.vue'
 import RecordTable from '../components/Record/RecordTable.vue'

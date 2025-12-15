@@ -30,6 +30,20 @@ spec:
                 name: circle-frontend-service
                 port:
                   number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: circle-backend-service
+                port:
+                  number: 8081
+          - path: /admin
+            pathType: Prefix
+            backend:
+              service:
+                name: circle-backend-service
+                port:
+                  number: 8081
   tls:
     - hosts:
         - www.chrom.jp

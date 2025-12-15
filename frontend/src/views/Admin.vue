@@ -32,8 +32,7 @@ import AccessNotice from '../components/AccessNotice.vue'
 import AdminSyncControls from '../components/admin/AdminSyncControls.vue'
 import AdminRecordList from '../components/admin/AdminRecordList.vue'
 import { supabase } from '../supabase'; 
-
-const BACKEND = import.meta.env.VITE_API_BASE_URL ?? ''
+import { BACKEND } from '@/runtimeConfig'
 
 const records = ref([]);
 const currentUserDiscordId = ref('');

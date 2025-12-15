@@ -21,7 +21,8 @@ onMounted(async () => {
     }
 
     // call backend to check admin (attach token if present)
-    const url = (import.meta.env.VITE_API_BASE_URL ?? '') + `/api/is_admin?discord_id=${encodeURIComponent(discordId)}`
+    const { BACKEND } = await import('@/runtimeConfig')
+    const url = (BACKEND ? `${BACKEND}` : '') + `/api/is_admin?discord_id=${encodeURIComponent(discordId)}`
     const headers = token ? { Authorization: `Bearer ${token}` } : {}
     const res = await fetch(url, { headers })
     let allowed = false

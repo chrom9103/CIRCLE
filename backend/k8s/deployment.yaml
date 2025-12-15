@@ -54,6 +54,9 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: circle-app-secret
           resources:
             requests:
               cpu: "50m"

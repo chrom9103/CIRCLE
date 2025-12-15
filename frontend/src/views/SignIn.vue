@@ -10,7 +10,7 @@ const signInWithDiscord = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
         provider: 'discord',
         options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
+            redirectTo: `${window.location.origin}${import.meta.env.BASE_URL}auth/callback`,
             queryParams: {
                 prompt: 'select_account'
             }

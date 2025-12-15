@@ -27,7 +27,7 @@ const years = [2024, 2025]
 </template>
 
 <style scoped>
-.year-selector { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
+.year-selector { display: flex; gap: 8px; overflow-x: auto; }
 .tab {
   padding: 8px 16px; border: none; background: #eee; border-radius: 20px;
   font-weight: bold; color: #666; cursor: pointer; transition: 0.2s; white-space: nowrap;

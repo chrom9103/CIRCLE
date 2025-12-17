@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('../views/Admin.vue'), // 管理者画面
+    },
+    {
+      path: '/vote',
+      name: 'vote',
+      component: () => import('../views/Vote.vue'), // 投票画面
     }
   ],
 })

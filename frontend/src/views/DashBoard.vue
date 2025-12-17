@@ -18,7 +18,7 @@ const handleSignOut = async () => {
         }
 
         try {
-            window.location.href = window.location.origin + '/';
+            window.location.href = window.location.origin + '/CIRCLE/';
         } catch (_) {
             router.replace({ name: 'home' });
         }
@@ -52,7 +52,6 @@ onMounted(async () => {
     <p>Welcome to our service</p>
     <div v-if="user">
         <p><strong>Name:</strong> {{ user.user_metadata.full_name }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
         <img v-if="user.user_metadata.avatar_url" :src="user.user_metadata.avatar_url" alt="User Avatar">
     </div>
     <div>

@@ -183,10 +183,10 @@ onMounted(async () => {
                 <h2>投票内容</h2>
                 <div class="proposal-box">
                     <p class="proposal-main">
-                        「PiedPiper青山テック愛好会は団体名を改称するべきである。」
+                        PiedPiper青山テック愛好会は団体名を改称するべきである。
                     </p>
                     <p class="proposal-sub">
-                        付帯文: 改称後の名称を「Digitart デジタル創作愛好会」とする
+                        付帯文: 改称後の名称を「Digitart テクノロジー愛好会」とする
                     </p>
                 </div>
             </div>

@@ -116,6 +116,10 @@ async function submitVote(vote) {
     }
 }
 
+function saveRedirect() {
+    sessionStorage.setItem('authRedirect', '/vote');
+}
+
 function formatDate(isoString) {
     if (!isoString) return '';
     const date = new Date(isoString);
@@ -153,7 +157,7 @@ onMounted(async () => {
         <!-- 未ログイン -->
         <div v-else-if="!user" class="not-logged-in">
             <p>投票するにはログインが必要です。</p>
-            <router-link to="/signin" class="btn btn-primary">ログイン</router-link>
+            <router-link to="/signin" class="btn btn-primary" @click="saveRedirect">ログイン</router-link>
         </div>
 
         <!-- ログイン済み -->
@@ -264,6 +268,10 @@ h1 {
 .not-logged-in {
     text-align: center;
     padding: 2rem;
+}
+
+.not-logged-in p {
+    margin-bottom: 1rem;
 }
 
 .period-info {

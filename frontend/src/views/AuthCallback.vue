@@ -14,6 +14,12 @@ function parseHash(hash) {
     }, {})
 }
 
+function getRedirectPath() {
+    const redirect = sessionStorage.getItem('authRedirect');
+    sessionStorage.removeItem('authRedirect');
+    return redirect || '/dashboard';
+}
+
 onMounted(async () => {
     try {
         // Try supabase helper if available
@@ -21,7 +27,7 @@ onMounted(async () => {
             const { data, error } = await supabase.auth.getSessionFromUrl({ storeSession: true })
             if (error) throw error
             if (data?.session) {
-                router.push({ name: 'dashboard' })
+                router.push(getRedirectPath())
                 return
             }
         }
@@ -36,7 +42,7 @@ onMounted(async () => {
             if (supabase.auth.setSession) {
                 const { data, error } = await supabase.auth.setSession({ access_token, refresh_token })
                 if (error) throw error
-                router.push({ name: 'dashboard' })
+                router.push(getRedirectPath())
                 return
             }
         }
@@ -47,7 +53,7 @@ onMounted(async () => {
             console.error('認証エラー:', error.message)
             router.push({ name: 'signin' })
         } else if (session) {
-            router.push({ name: 'dashboard' })
+            router.push(getRedirectPath())
         } else {
             router.push({ name: 'home' })
         }

@@ -127,7 +127,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.record { padding: 1.25rem }
 .record-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem }
 .header-actions { display:flex; gap:0.75rem; align-items:center }
 .btn-add { background:#29B575; color:#fff; border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer }

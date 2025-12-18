@@ -29,9 +29,9 @@ const years = [2024, 2025]
 <style scoped>
 .year-selector { display: flex; gap: 8px; overflow-x: auto; }
 .tab {
-  padding: 8px 16px; border: none; background: #eee; border-radius: 20px;
-  font-weight: bold; color: #666; cursor: pointer; transition: 0.2s; white-space: nowrap;
+  padding: 8px 16px; border: none; background: var(--color-background-mute); border-radius: 20px;
+  font-weight: bold; color: var(--color-text); cursor: pointer; transition: 0.2s; white-space: nowrap;
 }
-.tab:hover { background: #ddd; }
-.tab.active { background: #2c3e50; color: white; }
+.tab:hover { background: var(--color-background-soft); }
+.tab.active { background: var(--vt-c-indigo); color: var(--vt-c-white); }
 </style>

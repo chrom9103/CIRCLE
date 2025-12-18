@@ -30,11 +30,11 @@ const total = computed(() => {
 
 <style scoped>
 .banner {
-  background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px;
+  background: var(--color-background); padding: 20px; border-radius: 12px; margin-bottom: 20px;
   display: flex; justify-content: space-between; align-items: center;
-  border-left: 5px solid #2c3e50; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  border-left: 5px solid var(--vt-c-indigo); box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
-.label { font-size: 0.9rem; color: #888; font-weight: bold; }
-.amount { font-size: 1.8rem; font-weight: 800; color: #2c3e50; font-family: monospace; }
+.label { font-size: 0.9rem; color: var(--color-text); font-weight: bold; }
+.amount { font-size: 1.8rem; font-weight: 800; color: var(--vt-c-indigo); font-family: monospace; }
 .amount.minus { color: #e03131; }
 </style>

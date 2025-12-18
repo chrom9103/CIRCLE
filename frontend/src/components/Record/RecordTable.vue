@@ -47,16 +47,16 @@ const formatDate = (dateStr: string) => {
 </template>
 
 <style scoped>
-.table-container { overflow-x: auto; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.table-container { overflow-x: auto; background: var(--color-background); border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .ledger-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-th { background: #f8f9fa; padding: 12px; text-align: left; font-size: 0.85rem; color: #666; border-bottom: 2px solid #eee; }
-td { padding: 12px; border-bottom: 1px solid #eee; }
+th { background: var(--color-background-soft); padding: 12px; text-align: left; font-size: 0.85rem; color: var(--color-text); border-bottom: 2px solid var(--color-border); }
+td { padding: 12px; border-bottom: 1px solid var(--color-border); }
 .text-right { text-align: right; }
-.purpose { font-weight: 600; color: #333; }
+.purpose { font-weight: 600; color: var(--color-heading); }
 .meta { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
-.category { font-size: 0.75rem; color: #888; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+.category { font-size: 0.75rem; color: var(--color-text); background: var(--color-background-mute); padding: 2px 6px; border-radius: 4px; }
 .amount-col { text-align: right; font-family: monospace; font-weight: bold; }
 .amount-col[class*="revenue"], .amount-col[class*="income"] { color: #29B575; }
 .amount-col[class*="expense"], .amount-col[class*="expenditure"] { color: #e03131; }
-.empty-state { text-align: center; padding: 30px; color: #999; }
+.empty-state { text-align: center; padding: 30px; color: var(--color-text); opacity: 0.7; }
 </style>

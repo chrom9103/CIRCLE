@@ -152,15 +152,15 @@ const submit = async () => {
 
 <style scoped>
 .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; justify-content: center; align-items: center; }
-.modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 450px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
-h3 { margin-top: 0; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.modal-content { background: var(--color-background); padding: 25px; border-radius: 12px; width: 90%; max-width: 450px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+h3 { margin-top: 0; color: var(--color-heading); border-bottom: 1px solid var(--color-border); padding-bottom: 10px; }
 .form-group { margin-bottom: 15px; }
 .form-row { display: flex; gap: 10px; }
 .half { flex: 1; }
-label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; color: #555; }
-.input-field { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; color: var(--color-text); }
+.input-field { width: 100%; padding: 10px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 1rem; box-sizing: border-box; background: var(--color-background-soft); color: var(--color-text); }
 .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.cancel-btn { padding: 10px 20px; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; color: #475569; }
+.cancel-btn { padding: 10px 20px; background: var(--color-background-soft); border: none; border-radius: 6px; cursor: pointer; color: var(--color-text); }
 .save-btn { padding: 10px 20px; background: #29B575; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; }
 .save-btn:disabled { background: #ccc; cursor: not-allowed; }
 .error-box { background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 6px; font-size: 0.9rem; }

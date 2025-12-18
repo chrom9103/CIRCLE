@@ -1,19 +1,14 @@
 #!/bin/sh
 set -e
 
-TEMPLATE="/usr/share/nginx/html/CIRCLE/env.template.js"
-OUT="/usr/share/nginx/html/CIRCLE/env.js"
+HTML_FILE="/usr/share/nginx/html/CIRCLE/index.html"
 
-if [ -f "$TEMPLATE" ]; then
-  sed -e "s|__VITE_SUPABASE_URL__|${VITE_SUPABASE_URL:-}|g" \
-      -e "s|__VITE_SUPABASE_ANON_KEY__|${VITE_SUPABASE_ANON_KEY:-}|g" \
-      -e "s|__VITE_API_BASE_URL__|${VITE_API_BASE_URL:-}|g" \
-      -e "s|__SUPABASE_SERVICE_ROLE_KEY__|${SUPABASE_SERVICE_ROLE_KEY:-}|g" \
-      -e "s|__DISCORD_BOT_TOKEN__|${DISCORD_BOT_TOKEN:-}|g" \
-      -e "s|__DISCORD_GUILD_ID__|${DISCORD_GUILD_ID:-}|g" \
-      -e "s|__DISCORD_ROLE_ID_ADMIN__|${DISCORD_ROLE_ID_ADMIN:-}|g" \
-      -e "s|__DISCORD_ROLE_ID_MEMBER__|${DISCORD_ROLE_ID_MEMBER:-}|g" \
-      "$TEMPLATE" > "$OUT"
+# Build inline script with only PUBLIC environment variables
+# Note: SUPABASE_SERVICE_ROLE_KEY, DISCORD_BOT_TOKEN etc. are SECRET and should NOT be exposed to frontend
+
+if [ -f "$HTML_FILE" ]; then
+  # Replace the entire placeholder with actual environment values
+  sed -i "s|window.__APP_ENV__=window.__APP_ENV__||{}|window.__APP_ENV__={VITE_SUPABASE_URL:\"${VITE_SUPABASE_URL:-}\",VITE_SUPABASE_ANON_KEY:\"${VITE_SUPABASE_ANON_KEY:-}\",VITE_API_BASE_URL:\"${VITE_API_BASE_URL:-}\"}|g" "$HTML_FILE"
 fi
 
 exec nginx -g 'daemon off;'

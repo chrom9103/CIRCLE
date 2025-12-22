@@ -44,6 +44,12 @@ const router = createRouter({
       name: 'vote',
       component: () => import('../views/Vote.vue'), // 投票画面
     }
+    ,
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFound.vue'),
+    }
   ],
 })
 

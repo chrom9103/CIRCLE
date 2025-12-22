@@ -2,6 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home.vue'
 
 const router = createRouter({
+  scrollBehavior(to, from, savedPosition) {
+    // 戻る／進むボタンでの履歴復元があればそれを返す
+    if (savedPosition) {
+      return savedPosition
+    }
+    // ハッシュがある場合はその要素へスクロール
+    if (to.hash) {
+      return { el: to.hash }
+    }
+    return { left: 0, top: 0 }
+  },
+
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -23,7 +35,7 @@ const router = createRouter({
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('../views/SignIn.vue'),　　// サインイン画面
+      component: () => import('../views/SignIn.vue'), // サインイン画面
     },
     {
       path: '/dashboard',

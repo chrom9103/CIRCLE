@@ -26,6 +26,9 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
       <section class="feature-split">
         <div class="text">
           <h2>記録一覧と記録の追加 — ワンストップ</h2>
+          <p class="remark">
+            member権限保有者のみ
+          </p>
           <p>「記録」ページでは一覧表示と新規作成が同じインターフェース上に統合されています。上部で検索・フィルタ、右上のボタンでモーダルを開き、即座に記録を追加できます。追加された記録は即時に一覧へ反映されます。</p>
           <ul>
             <li>一覧: 期間やステータスで絞り込み可能</li>
@@ -50,6 +53,9 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
       <section class="panel admin">
         <div>
           <h2>管理者向け機能</h2>
+          <p class="remark">
+            administrator権限保有者のみ
+          </p>
           <p>管理者は記録の承認、論理削除、メンバー同期などを行えます。管理者専用の操作は `管理` ページでまとめて実行できます。</p>
         </div>
         <div class="card visuals">
@@ -81,7 +87,19 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 .lead { color: #475569; margin-bottom: 1rem }
 .cta { display: inline-block; background: #00bd7e; color: white; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 700 }
 
-.feature-split { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; margin: 2.5rem 0 }
+.remark {
+  display: inline-block;
+  background: rgba(0, 189, 126, 0.08);
+  color: #065f46;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: 1px solid rgba(0, 189, 126, 0.12);
+  margin: 0.5rem 0 0.5rem;
+}
+
+.feature-split { display: grid; grid-template-columns: 1fr auto; gap: 2rem; margin: 2.5rem 0 }
 .feature-split .text h2 { margin-top: 0 }
 .feature-split .text p { color: #475569 }
 .feature-split ul { margin: 0.5rem 0 0 1.1rem }
@@ -91,10 +109,10 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 
 .visuals .card { display: block; position: relative; max-width: 540px }
 .visuals .main-shot { width: 100%; }
-.visuals .overlay { position: absolute; right: 16px; bottom: 16px; width: 50%; max-width: 400px; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(2,6,23,0.12) }
+.visuals .overlay { aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(2,6,23,0.12) }
 
 .panel { margin: 2rem 0 }
-.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; padding: 1rem; background: #fff; border-radius: 10px; border: 1px solid #eef2f7 }
+.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; padding: 1rem; background: #fff; border-radius: 10px; border: 1px solid #eef2f7 }
 .panel.admin .media-box { max-width: 540px; width: 100% }
 
 .get-started ol { padding-left: 1.1rem }

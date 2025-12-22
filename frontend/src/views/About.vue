@@ -112,7 +112,7 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 .visuals .overlay { aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(2,6,23,0.12) }
 
 .panel { margin: 2rem 0 }
-.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; padding: 1rem; background: #fff; border-radius: 10px; border: 1px solid #eef2f7 }
+.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; background: #fff; }
 .panel.admin .media-box { max-width: 540px; width: 100% }
 
 .get-started ol { padding-left: 1.1rem }

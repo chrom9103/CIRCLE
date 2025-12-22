@@ -1,11 +1,5 @@
-const getRuntime = () => {
-	if (typeof window !== 'undefined' && (window as any).__APP_ENV__ && Object.keys((window as any).__APP_ENV__).length > 0) {
-		return (window as any).__APP_ENV__
-	}
-	return import.meta.env
-}
-
-export const RUNTIME = getRuntime()
+// ビルド時に埋め込まれた環境変数を使用（env.jsによる公開を廃止）
+export const RUNTIME = import.meta.env
 
 const rawApiBase = RUNTIME.VITE_API_BASE_URL ?? ''
 export const BACKEND = (typeof rawApiBase === 'string') ? rawApiBase.replace(/^"(.*)"$/, '$1') : ''

@@ -13,7 +13,7 @@
         <div>
           <h4>プロダクト</h4>
           <ul>
-            <li><router-link to="/about">概要</router-link></li>
+            <li><router-link to="/">ホーム</router-link></li>
             <li><router-link to="/about">機能</router-link></li>
             <li><router-link to="/null">よくある質問</router-link></li>
           </ul>

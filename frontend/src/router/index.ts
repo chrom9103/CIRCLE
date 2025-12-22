@@ -9,6 +9,12 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    ,
+    {
+      path: '/null',
+      name: 'not-implemented',
+      component: () => import('../views/Null.vue'), // 未実装ページ表示
+    },
     {
       path: '/about',
       name: 'about',

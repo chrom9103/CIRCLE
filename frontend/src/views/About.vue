@@ -7,7 +7,7 @@ const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
 </script>
 
 <template>
-  <div>
+  <div class="about-root">
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-text">
@@ -124,19 +124,39 @@ const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
 .feature-split .text p { color: #475569 }
 .feature-split ul { margin: 0.5rem 0 0 1.1rem }
 
-.media-box { width: 100%; max-width: 540px; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; border: 1px solid #e6eef2; background: #fff }
-.media-box img { width: 100%; height: 100%; object-fit: cover; display: block }
+.media-box {
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e6eef2;
+  background: #fff;
+  min-height: clamp(160px, 24vw, 300px);
+}
+.media-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
-.visuals .card { display: block; position: relative; max-width: 540px }
+.visuals .card { display: flex; flex-direction: column; gap: 0.75rem; position: relative; max-width: 540px }
 .visuals .main-shot { width: 100%; }
-.visuals .overlay { aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(2,6,23,0.12) }
+.visuals .overlay { aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 24px rgba(2,6,23,0.12); width: 100% }
 
 .panel { margin: 2rem 0 }
-.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; background: #fff; }
+.panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 2rem; background: #fff; }
 .panel.admin .media-box { max-width: 540px; width: 100% }
 
 .panel.techstack { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; background: #fff; padding: 1rem; border-radius: 10px; border: 2px solid #eef2f7 }
 .panel.techstack .media-box { max-width: 540px; width: 100% }
+
+/* セクションの最小幅を設定 */
+.about-root { width: 100%; min-width: 400px; overflow-x: auto; -webkit-overflow-scrolling: touch }
+.panel.techstack, .feature-split .text, .feature-split .visuals, .visuals .card, .hero-grid > .hero-text, .hero-grid > .hero-media {
+  min-width: 400px;
+}
 
 .get-started ol { padding-left: 1.1rem }
 
@@ -145,7 +165,39 @@ const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
   .feature-split { grid-template-columns: 1fr }
   .visuals { display: block }
   .visuals .card { flex-direction: column; align-items: center }
-  .visuals .overlay { width: 60% }
   .panel.admin { flex-direction: column }
+}
+
+@media (max-width: 1024px) {
+  .hero-grid,
+  .feature-split,
+  .panel.admin,
+  .panel.techstack {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 1rem;
+  }
+
+  .hero-text, .feature-split .text, .panel.admin > div:first-child {
+    order: 1;
+  }
+
+  .visuals, .visuals .card, .panel.admin .card.visuals, .panel.techstack .card.visuals {
+    order: 2;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+
+  .media-box {
+    max-width: 100%;
+    width: 100%;
+    min-height: clamp(180px, 28vw, 340px);
+  }
+
+  .media-box img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 }
 </style>

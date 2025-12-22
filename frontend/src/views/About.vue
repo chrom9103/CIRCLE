@@ -79,7 +79,7 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center }
 .hero-text .title { font-size: 2rem; margin: 0 0 0.5rem }
 .lead { color: #475569; margin-bottom: 1rem }
-.cta { display: inline-block; background: #0ea5a3; color: white; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 700 }
+.cta { display: inline-block; background: #00bd7e; color: white; padding: 0.6rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 700 }
 
 .feature-split { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; margin: 2.5rem 0 }
 .feature-split .text h2 { margin-top: 0 }

@@ -46,7 +46,7 @@ function primaryAction() {
 
         <div class="hero-ctas">
           <button class="btn primary large" @click="primaryAction">{{ isLoggedIn ? '会計を記録する →' : 'Discordでサインイン →' }}</button>
-          <button class="btn outline large">詳しく見る</button>
+          <router-link to="/about" class="btn outline large">使い方を見る</router-link>
         </div>
       </div>
     </div>

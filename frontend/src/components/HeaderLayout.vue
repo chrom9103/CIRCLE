@@ -15,6 +15,7 @@
       <div v-if="showMenu" class="mobile-backdrop" @click="toggleMenu"></div>
       <div v-if="showMenu" class="mobile-menu" role="menu" @click.stop>
         <router-link to="/" class="mobile-link" @click="toggleMenu" role="menuitem">ホーム</router-link>
+        <router-link to="/about" class="mobile-link" @click="toggleMenu" role="menuitem">使い方</router-link>
         <router-link to="/record" class="mobile-link" @click="toggleMenu" role="menuitem">記録</router-link>
         <router-link to="/admin" class="mobile-link" @click="toggleMenu" role="menuitem">管理</router-link>
         <router-link to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">ダッシュボード</router-link>

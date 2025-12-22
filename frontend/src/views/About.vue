@@ -4,6 +4,7 @@ const recordImg = new URL('../assets/about/RecordView.png', import.meta.url).hre
 const modalImg = new URL('../assets/about/RecordModal.png', import.meta.url).href
 const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
+import Footer from '../components/home/Footer.vue'
 </script>
 
 <template>
@@ -95,6 +96,8 @@ const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
       </section>
 
     </main>
+    
+    <Footer />
   </div>
 </template>
 

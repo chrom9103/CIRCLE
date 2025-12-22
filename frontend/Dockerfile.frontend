@@ -23,8 +23,7 @@ COPY --from=builder /app/dist /usr/share/nginx/html/CIRCLE/
 
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Copy runtime env template and entrypoint to inject env vars into static files
-COPY env.template.js /usr/share/nginx/html/CIRCLE/env.template.js
+# Copy entrypoint (env.js generation removed for security)
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 

@@ -3,6 +3,7 @@ const homeImg = new URL('../assets/about/HomeView.png', import.meta.url).href
 const recordImg = new URL('../assets/about/RecordView.png', import.meta.url).href
 const modalImg = new URL('../assets/about/RecordModal.png', import.meta.url).href
 const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
+const techImg = new URL('../assets/about/TechStack.png', import.meta.url).href
 </script>
 
 <template>
@@ -65,6 +66,25 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
         </div>
       </section>
 
+      <section class="panel techstack">
+        <div>
+          <h2>技術スタック</h2>
+          <p>本プロジェクトは次の主要技術で構成されています。</p>
+          <ul>
+            <li>Vue 3 + Vite: 高速でモダンなフロントエンド開発</li>
+            <li>FastAPI: 高性能な非同期バックエンド</li>
+            <li>Supabase: バックエンドのデータベースと認証管理</li>
+            <li>Docker: コンテナ化による環境の一貫性と移植性</li>
+            <li>Kubernetes: 本番環境でのスケーラブルなデプロイ管理</li>
+          </ul>
+        </div>
+        <div class="card visuals">
+          <div class="media-box">
+            <img :src="techImg" alt="Tech Stack" />
+          </div>
+        </div>
+      </section>
+
       <section class="panel get-started">
         <h2>はじめる</h2>
         <ol>
@@ -114,6 +134,9 @@ const adminImg = new URL('../assets/about/AdminView.png', import.meta.url).href
 .panel { margin: 2rem 0 }
 .panel.admin { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; background: #fff; }
 .panel.admin .media-box { max-width: 540px; width: 100% }
+
+.panel.techstack { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; background: #fff; padding: 1rem; border-radius: 10px; border: 2px solid #eef2f7 }
+.panel.techstack .media-box { max-width: 540px; width: 100% }
 
 .get-started ol { padding-left: 1.1rem }
 

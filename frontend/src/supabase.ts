@@ -12,7 +12,7 @@ const supabaseUrl = runtimeEnv.VITE_SUPABASE_URL
 const supabaseAnonKey = runtimeEnv.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl) {
-	throw new Error('supabaseUrl is required. Check runtime config or build-time VITE_SUPABASE_URL')
+	throw new Error('supabaseUrl is required. Check build-time VITE_SUPABASE_URL')
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)

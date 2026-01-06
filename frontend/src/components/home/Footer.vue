@@ -13,16 +13,16 @@
         <div>
           <h4>プロダクト</h4>
           <ul>
-            <li><router-link to="#">概要</router-link></li>
-            <li><router-link to="#">機能</router-link></li>
-            <li><router-link to="#">よくある質問</router-link></li>
+            <li><router-link to="/">ホーム</router-link></li>
+            <li><router-link to="/about">機能</router-link></li>
+            <li><router-link to="/null">よくある質問</router-link></li>
           </ul>
         </div>
         <div>
           <h4>リソース</h4>
           <ul>
-            <li><router-link to="#">ドキュメント</router-link></li>
-            <li><router-link to="#">サポート</router-link></li>
+            <li><router-link to="/null">ドキュメント</router-link></li>
+            <li><router-link to="/null">サポート</router-link></li>
           </ul>
         </div>
       </div>

@@ -7,11 +7,17 @@ import AddRecordModal from '../components/Record/AddRecordModal.vue'
 import RecordTable from '../components/Record/RecordTable.vue'
 import SummaryBannar from '../components/Record/SummaryBannar.vue'
 import YearSelector from '../components/Record/YearSelector.vue'
+import MemberGate from '../components/MemberGate.vue'
+import AccessNotice from '../components/AccessNotice.vue'
 
 const transactions = ref([])
 const loading = ref(false)
 const showModal = ref(false)
 const currentYear = ref('all')
+
+const whitelisted = ref(false)
+const accessDenied = ref(false)
+const currentUserDiscordId = ref('')
 
 function onYearUpdate(y) {
   currentYear.value = y
@@ -79,13 +85,25 @@ async function handleSaved() {
   closeModal()
 }
 
+const onMemberReady = async ({ allowed, discordId, token }) => {
+  currentUserDiscordId.value = discordId || ''
+  whitelisted.value = !!allowed
+  accessDenied.value = !allowed
+  if (!allowed) return
+  await fetchTransactions()
+}
+
 onMounted(() => {
-  fetchTransactions()
 })
 </script>
 
 <template>
   <section class="record container">
+    <MemberGate @ready="onMemberReady" />
+    
+    <AccessNotice v-if="accessDenied" :accessDenied="accessDenied" :discordId="currentUserDiscordId" />
+
+    <div v-else>
     <header class="record-header">
       <h1>記録</h1>
       <div class="header-actions">
@@ -104,11 +122,11 @@ onMounted(() => {
     </div>
 
     <AddRecordModal v-if="showModal" @close="closeModal" @saved="handleSaved" />
+    </div>
   </section>
 </template>
 
 <style scoped>
-.record { padding: 1.25rem }
 .record-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem }
 .header-actions { display:flex; gap:0.75rem; align-items:center }
 .btn-add { background: var(--color-accent-success); color: var(--vt-c-white); border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer }

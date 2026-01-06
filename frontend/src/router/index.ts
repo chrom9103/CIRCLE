@@ -2,6 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home.vue'
 
 const router = createRouter({
+  scrollBehavior(to, from, savedPosition) {
+    // 戻る／進むボタンでの履歴復元があればそれを返す
+    if (savedPosition) {
+      return savedPosition
+    }
+    // ハッシュがある場合はその要素へスクロール
+    if (to.hash) {
+      return { el: to.hash }
+    }
+    return { left: 0, top: 0 }
+  },
+
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -9,10 +21,21 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
     },
+    ,
+    {
+      path: '/null',
+      name: 'not-implemented',
+      component: () => import('../views/Null.vue'), // 未実装ページ表示
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('../views/About.vue'), // アプリの使い方ページ
+    },
     {
       path: '/signin',
       name: 'signin',
-      component: () => import('../views/SignIn.vue'),　　// サインイン画面
+      component: () => import('../views/SignIn.vue'), // サインイン画面
     },
     {
       path: '/dashboard',
@@ -38,6 +61,12 @@ const router = createRouter({
       path: '/vote',
       name: 'vote',
       component: () => import('../views/Vote.vue'), // 投票画面
+    }
+    ,
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFound.vue'),
     }
   ],
 })

@@ -9,6 +9,7 @@ __pycache__/
 
 # environment variables file
 .env
+.env.local
 
 # Secrets or generated archives
 secrets

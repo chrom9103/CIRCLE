@@ -18,13 +18,41 @@ const newRecord = ref({
     evidence_file_link: '',
 });
 
-// バリデーション
+// category length limit kept for validation but free-text removed
+
+const revenueCategories = [
+  '会費',
+  '前年度繰越金',
+  'イベント参加費',
+  '大学公認助成金',
+  '協賛金・寄付金',
+  '雑収入',
+]
+
+const expenseCategories = [
+  '旅費交通費',
+  '広報・宣伝費',
+  '行事・イベント費',
+  '活動助成・補助',
+  '消耗品費',
+  '事務手数料',
+  '備品費',
+  '雑費',
+]
+
+const categoryOptions = computed(() => {
+  return (newRecord.value.record_type || '').toString().toLowerCase() === 'revenue'
+    ? revenueCategories
+    : expenseCategories
+})
+
 const isFormValid = computed(() => {
+    const cat = (newRecord.value.category || '').toString().trim()
     return newRecord.value.purpose.trim() !== '' &&
            newRecord.value.amount !== null &&
            newRecord.value.amount >= 0 &&
            newRecord.value.record_type.trim() !== '' &&
-           newRecord.value.category.trim() !== '';
+           cat !== '';
 });
 
 // ホワイトリストチェック (Record.vueから移植)
@@ -126,10 +154,7 @@ const submit = async () => {
             <label>カテゴリ</label>
             <select v-model="newRecord.category" class="input-field">
               <option value="">選択してください</option>
-              <option value="備品">備品</option>
-              <option value="交通費">交通費</option>
-              <option value="会費">会費</option>
-              <option value="雑費">雑費</option>
+              <option v-for="opt in categoryOptions" :key="opt" :value="opt">{{ opt }}</option>
             </select>
           </div>
         </div>

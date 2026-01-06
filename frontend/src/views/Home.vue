@@ -18,5 +18,18 @@ import Footer from '../components/home/Footer.vue'
 
 <style scoped>
 :root { --container-max:1100px }
-.container { max-width: var(--container-max); margin: 2rem auto; padding:0 1rem }
+.container { max-width: var(--container-max); margin: 2rem auto; padding:0 1rem; box-sizing: border-box }
+
+main { display: flex; flex-direction: column; gap: 2rem }
+
+@media (max-width: 1000px) {
+  :root { --container-max: 900px }
+}
+
+@media (max-width: 600px) {
+  :root { --container-max: 100% }
+  .container { margin: 1rem auto; padding: 0 0.75rem }
+  main { gap: 1rem }
+  .container > * { width: 100% }
+}
 </style>

@@ -2,14 +2,37 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import { supabase } from '@/supabase'
 
 const router = useRouter()
 const auth = useAuthStore()
 const isLoggedIn = computed(() => !!(auth && auth.isLoggedIn))
 
+async function signInWithDiscord() {
+  try {
+    const runtime = (typeof window !== 'undefined' && window.__APP_ENV__) ? window.__APP_ENV__ : import.meta.env
+    const siteBase = runtime.VITE_SITE_URL || `${window.location.origin}${import.meta.env.BASE_URL}`
+    const redirectTo = `${siteBase.replace(/\/+$/, '')}/auth/callback`
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: {
+        redirectTo,
+        queryParams: { prompt: 'select_account' }
+      }
+    })
+
+    if (error) {
+      console.error('Login failed:', error.message)
+    }
+  } catch (e) {
+    console.error('signInWithDiscord error', e)
+  }
+}
+
 function primaryAction() {
   if (isLoggedIn.value) router.push('/record')
-  else router.push('/signin')
+  else signInWithDiscord()
 }
 </script>
 
@@ -23,7 +46,7 @@ function primaryAction() {
 
         <div class="hero-ctas">
           <button class="btn primary large" @click="primaryAction">{{ isLoggedIn ? '会計を記録する →' : 'Discordでサインイン →' }}</button>
-          <button class="btn outline large">詳しく見る</button>
+          <router-link to="/about" class="btn outline large">使い方を見る</router-link>
         </div>
       </div>
     </div>

@@ -161,7 +161,7 @@ label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem
 .input-field { width: 100%; padding: 10px; border: 1px solid var(--color-border); border-radius: 6px; font-size: 1rem; box-sizing: border-box; background: var(--color-background-soft); color: var(--color-text); }
 .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 .cancel-btn { padding: 10px 20px; background: var(--color-background-soft); border: none; border-radius: 6px; cursor: pointer; color: var(--color-text); }
-.save-btn { padding: 10px 20px; background: #29B575; border: none; border-radius: 6px; cursor: pointer; color: white; font-weight: bold; }
-.save-btn:disabled { background: #ccc; cursor: not-allowed; }
-.error-box { background: #fee2e2; color: #b91c1c; padding: 10px; border-radius: 6px; font-size: 0.9rem; }
+.save-btn { padding: 10px 20px; background: var(--color-accent-success); border: none; border-radius: 6px; cursor: pointer; color: var(--vt-c-white); font-weight: bold; }
+.save-btn:disabled { background: var(--color-border-weak); cursor: not-allowed; }
+.error-box { background: var(--color-alert-danger-bg); color: var(--color-alert-danger-text); padding: 10px; border-radius: 6px; font-size: 0.9rem; }
 </style>

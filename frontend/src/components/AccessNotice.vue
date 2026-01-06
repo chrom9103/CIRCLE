@@ -1,6 +1,6 @@
 <template>
-  <div v-if="accessDenied" style="padding:1rem; border:1px solid #f3c; background:#fff5f5;">
-    <p style="color:#a00; font-weight:600">アクセスが拒否されました。</p>
+  <div v-if="accessDenied" style="padding:1rem; border:1px solid var(--color-alert-danger-text); background: var(--color-alert-danger-bg);">
+    <p style="color:var(--color-alert-danger-text); font-weight:600">アクセスが拒否されました。</p>
     <p v-if="!discordId">サインインしてください。</p>
     <div style="margin-top:0.5rem">
       <router-link to="/signin">サインインページへ</router-link>

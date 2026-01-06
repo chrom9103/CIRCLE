@@ -56,7 +56,7 @@ td { padding: 12px; border-bottom: 1px solid var(--color-border); }
 .meta { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
 .category { font-size: 0.75rem; color: var(--color-text); background: var(--color-background-mute); padding: 2px 6px; border-radius: 4px; }
 .amount-col { text-align: right; font-family: monospace; font-weight: bold; }
-.amount-col[class*="revenue"], .amount-col[class*="income"] { color: #29B575; }
-.amount-col[class*="expense"], .amount-col[class*="expenditure"] { color: #e03131; }
+.amount-col[class*="revenue"], .amount-col[class*="income"] { color: var(--color-accent-success); }
+.amount-col[class*="expense"], .amount-col[class*="expenditure"] { color: var(--color-accent-danger); }
 .empty-state { text-align: center; padding: 30px; color: var(--color-text); opacity: 0.7; }
 </style>

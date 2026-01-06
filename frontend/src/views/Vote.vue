@@ -257,7 +257,7 @@ onMounted(async () => {
 h1 {
     text-align: center;
     margin-bottom: 2rem;
-    color: #333;
+    color: var(--color-muted-strong);
 }
 
 .loading {
@@ -275,7 +275,7 @@ h1 {
 }
 
 .period-info {
-    background: #f5f5f5;
+    background: var(--color-surface-soft);
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1.5rem;
@@ -288,7 +288,7 @@ h1 {
 }
 
 .period-dates {
-    color: #666;
+    color: var(--color-muted);
     margin-bottom: 0.5rem;
 }
 
@@ -300,18 +300,18 @@ h1 {
 }
 
 .period-status.before {
-    background: #fff3cd;
-    color: #856404;
+    background: var(--color-alert-warning-bg);
+    color: var(--color-alert-warning-text);
 }
 
 .period-status.open {
-    background: #d4edda;
-    color: #155724;
+    background: var(--color-alert-success-bg);
+    color: var(--color-alert-success-text);
 }
 
 .period-status.after {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--color-alert-danger-bg);
+    color: var(--color-alert-danger-text);
 }
 
 .not-member {
@@ -320,8 +320,8 @@ h1 {
 }
 
 .warning {
-    color: #856404;
-    background: #fff3cd;
+    color: var(--color-alert-warning-text);
+    background: var(--color-alert-warning-bg);
     padding: 1rem;
     border-radius: 8px;
 }
@@ -336,8 +336,8 @@ h1 {
 }
 
 .proposal-box {
-    background: #f7f7f7;
-    border: 2px solid #b3b3b3;
+    background: var(--color-surface-soft);
+    border: 2px solid var(--color-border-weak);
     border-radius: 8px;
     padding: 1.5rem;
 }
@@ -346,26 +346,26 @@ h1 {
     font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #1d1d1d;
+    color: var(--color-on-surface);
 }
 
 .proposal-sub {
-    color: #666;
+    color: var(--color-muted);
     font-size: 0.95rem;
     padding-left: 1rem;
 }
 
 .error-message {
-    background: #f8d7da;
-    color: #721c24;
+    background: var(--color-alert-danger-bg);
+    color: var(--color-alert-danger-text);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1rem;
 }
 
 .success-message {
-    background: #d4edda;
-    color: #155724;
+    background: var(--color-alert-success-bg);
+    color: var(--color-alert-success-text);
     padding: 1rem;
     border-radius: 8px;
     margin-bottom: 1rem;
@@ -374,13 +374,13 @@ h1 {
 .already-voted, .before-voting, .after-voting {
     text-align: center;
     padding: 1.5rem;
-    background: #f5f5f5;
+    background: var(--color-surface-soft);
     border-radius: 8px;
 }
 
 .already-voted .note {
     font-size: 0.9rem;
-    color: #666;
+    color: var(--color-muted);
     margin-top: 0.5rem;
 }
 
@@ -391,7 +391,7 @@ h1 {
 .vote-buttons h3 {
     font-size: 1rem;
     margin-bottom: 1.5rem;
-    color: #333;
+    color: var(--color-muted-strong);
 }
 
 .buttons {
@@ -416,36 +416,36 @@ h1 {
 }
 
 .btn-primary {
-    background: #2196f3;
-    color: white;
+    background: var(--color-primary);
+    color: var(--vt-c-white);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: #1976d2;
+    background: var(--color-primary-hover);
 }
 
 .btn-agree {
-    background: #4caf50;
-    color: white;
+    background: var(--color-accept);
+    color: var(--vt-c-white);
     min-width: 120px;
 }
 
 .btn-agree:hover:not(:disabled) {
-    background: #388e3c;
+    background: var(--color-accept-hover);
 }
 
 .btn-disagree {
-    background: #f44336;
-    color: white;
+    background: var(--color-decline);
+    color: var(--vt-c-white);
     min-width: 120px;
 }
 
 .btn-disagree:hover:not(:disabled) {
-    background: #d32f2f;
+    background: var(--color-decline-hover);
 }
 
 .vote-warning {
-    color: #856404;
+    color: var(--color-alert-warning-text);
     font-size: 0.9rem;
     margin-top: 1rem;
 }
@@ -454,11 +454,11 @@ h1 {
     text-align: center;
     margin-top: 2rem;
     padding-top: 1rem;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--color-border);
 }
 
 .back-link a {
-    color: #2196f3;
+    color: var(--color-primary);
     text-decoration: none;
 }
 

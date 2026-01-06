@@ -78,13 +78,13 @@ const submit = async () => {
 
 <style scoped>
 .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-.modal-content { background: white; padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; color: #333; }
+.modal-content { background: var(--color-background); padding: 25px; border-radius: 12px; width: 90%; max-width: 400px; color: var(--color-on-surface); }
 .form-group { margin-bottom: 15px; }
 .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-input[type="text"], input[type="number"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+input[type="text"], input[type="number"] { width: 100%; padding: 8px; border: 1px solid var(--color-border); border-radius: 6px; }
 .radio-group { display: flex; gap: 15px; }
 .actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 button { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; }
-.save { background: #29B575; color: white; font-weight: bold; }
-.cancel { background: #f0f0f0; color: #333; }
+.save { background: var(--color-accent-success); color: var(--vt-c-white); font-weight: bold; }
+.cancel { background: var(--color-surface-soft); color: var(--color-on-surface); }
 </style>

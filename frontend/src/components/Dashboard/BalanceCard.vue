@@ -50,19 +50,19 @@ const formatMoney = (amount: number) => amount.toLocaleString()
 
 <style scoped>
 .balance-card {
-  background: #1e1e1e; /* ダークモード背景 */
-  color: white;
+  background: var(--color-balancecard-bg); /* Dashboard card background (configurable) */
+  color: var(--color-balancecard-text);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   margin-bottom: 20px;
 }
-.main-balance h2 { font-size: 0.9rem; color: #aaa; margin-bottom: 5px; }
+.main-balance h2 { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 5px; }
 .main-balance .amount { font-size: 2.5rem; font-weight: bold; margin: 0; }
 
 .stats { display: flex; gap: 20px; margin-top: 20px; }
-.stat-item span { font-size: 0.8rem; color: #888; }
+.stat-item span { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
 .stat-item p { font-size: 1.1rem; font-weight: bold; margin: 0; }
-.income p { color: #29B575; } /* Pied Piper Green */
-.expense p { color: #ff4d4d; }
+.income p { color: var(--color-accent-success); } /* Pied Piper Green */
+.expense p { color: var(--color-accent-danger); }
 </style>

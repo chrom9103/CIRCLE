@@ -32,21 +32,22 @@ function primaryAction() {
 
 <style scoped>
 /* White-based, minimal, modern hero */
-.hero-root { background: #ffffff; color: #0f172a; padding-bottom: 3.5rem; }
+.hero-root { background: var(--color-background); color: var(--color-text); padding-bottom: 3.5rem; }
 .nav { display:flex; justify-content:space-between; align-items:center; padding:1.25rem 0; }
-.nav-brand { display:flex; align-items:center; gap:0.75rem; font-weight:700; color:#0b2540 }
-.nav-brand img { width:44px; height:44px; display:block; border-radius:50%; background:#10b981 }
-.contact-btn { background:#0b1220; color:#fff; padding:10px 16px; border-radius:999px; border:none; font-weight:700 }
+.nav-brand { display:flex; align-items:center; gap:0.75rem; font-weight:700; color: var(--color-heading) }
+.nav-brand img { width:44px; height:44px; display:block; border-radius:50%; background: var(--color-brand-img-bg) }
+.contact-btn { background: var(--color-accent-brand); color:var(--color-text); padding:10px 16px; border-radius:999px; border:none; font-weight:700 }
+    
 .container { max-width:1100px; margin:0 auto; padding: 4.5rem 1rem; display:flex; align-items:center; justify-content:center }
 .hero-inner { text-align:center; max-width:760px }
-.hero-pill { display:inline-block; background:#f1f5f9; color:#334155; padding:10px 18px; border-radius:999px; font-weight:600; margin-bottom:2rem }
-.hero-kicker { margin:0; font-size:2rem; color:#0b2540; font-weight:700; margin-bottom:1.25rem; line-height:1.2 }
-.hero-desc { color:#475569; margin:0 auto 1.75rem; max-width:56ch; line-height:1.8 }
+.hero-pill { display:inline-block; background: var(--color-background-mute); color: var(--color-text); padding:10px 18px; border-radius:999px; font-weight:600; margin-bottom:2rem }
+.hero-kicker { margin:0; font-size:2rem; color: var(--color-heading); font-weight:700; margin-bottom:1.25rem; line-height:1.2 }
+.hero-desc { color: var(--color-text); margin:0 auto 1.75rem; max-width:56ch; line-height:1.8; opacity:0.9 }
 .hero-ctas { display:flex; gap:1rem; justify-content:center; margin-top:0.5rem }
 .btn { padding:0.85rem 1.25rem; border-radius:999px; font-weight:700; cursor:pointer; border:1px solid transparent; font-size:1rem }
 .btn.large { padding:0.95rem 1.5rem; font-size:1.02rem }
-.btn.primary { background:#0b1220; color:#fff; box-shadow: 0 10px 30px rgba(2,6,23,0.08) }
-.btn.outline { background:transparent; border:1px solid rgba(15,23,42,0.08); color:#0b1220 }
+.btn.primary { background: var(--color-accent-brand); color: var(--color-text); box-shadow: 0 10px 30px rgba(2,6,23,0.08) }
+.btn.outline { background:transparent; border:1px solid var(--color-border); color: var(--color-heading) }
 
 @media (max-width:900px) {
   .container { padding: 2.5rem 1rem }

@@ -114,8 +114,8 @@ const userAvatar = computed(() => {
   padding: 0.6rem 1rem;
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid #e6e6e6;
-  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
   gap: 1rem;
 }
 
@@ -129,6 +129,7 @@ const userAvatar = computed(() => {
   font-size: 1.05rem;
   font-weight: 700;
   margin: 0;
+  color: var(--color-heading);
 }
 
 .right {
@@ -145,7 +146,7 @@ const userAvatar = computed(() => {
 
 .nav-link {
   text-decoration: none;
-  color: #1f2937;
+  color: var(--color-on-surface);
   padding: 0.4rem 0.7rem;
   border-radius: 6px;
   font-weight: 600;
@@ -156,8 +157,8 @@ const userAvatar = computed(() => {
 }
 
 .signout {
-  background: #000;
-  color: #fff;
+  background: var(--color-accent-brand);
+  color: var(--vt-c-white);
   border: none;
   padding: 0.45rem 0.8rem;
   border-radius: 999px;
@@ -177,9 +178,8 @@ const userAvatar = computed(() => {
   height: 36px;
   border-radius: 999px;
   object-fit: cover;
-  border: 2px solid #eee;
+  border: 2px solid var(--color-border);
 }
-
 .burger {
   display: inline-flex;
   align-items: center;
@@ -201,7 +201,7 @@ const userAvatar = computed(() => {
 .burger span {
   display: block;
   height: 2px;
-  background: #111827;
+  background: var(--color-text);
   margin: 3px 0;
   border-radius: 2px;
   width: 18px;
@@ -216,8 +216,8 @@ const userAvatar = computed(() => {
   position: absolute;
   right: 8px;
   top: 56px;
-  background: white;
-  border: 1px solid #e6e6e6;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   box-shadow: 0 6px 18px rgba(15,23,42,0.06);
   border-radius: 8px;
   padding: 0.5rem;
@@ -241,7 +241,7 @@ const userAvatar = computed(() => {
   width: 100%;
   padding: 0.5rem;
   text-decoration: none;
-  color: #111827;
+  color: var(--color-on-surface);
 }
 
 .mobile-link:focus,

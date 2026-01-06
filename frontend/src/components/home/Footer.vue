@@ -33,13 +33,13 @@
 
 <style scoped>
 /* Clean footer */
-.site-footer { background:#ffffff; border-top:1px solid rgba(15,23,42,0.04); padding:2rem 0 }
+.site-footer { background: var(--color-background); border-top:1px solid var(--color-border-hover); padding:2rem 0 }
 .footer-inner { display:flex; gap:2rem; align-items:flex-start; max-width:1100px; margin:0 auto; padding:0 1rem }
 .brand img { width:48px; height:48px }
-.brand p { color:#475569; max-width:36ch }
+.brand p { color: var(--color-text); max-width:36ch }
 .links { display:flex; gap:2rem; margin-left:auto }
-.links a { color:#0b2540; text-decoration:none }
-.copyright { text-align:center; padding-top:1rem; color:#64748b }
+.links a { color: var(--color-heading); text-decoration:none }
+.copyright { text-align:center; padding-top:1rem; color: var(--color-muted) }
 
 @media (max-width:900px) {
   .footer-inner { flex-direction:column; align-items:flex-start }

@@ -64,21 +64,21 @@
 
 <style scoped>
 /* HowItWorks - centered steps with connecting line and badge */
-.how-root { background: #fbfdfe; padding: 3.5rem 0 }
+.how-root { background: var(--color-background); padding: 3.5rem 0 }
 .how-container { max-width:1100px; margin:0 auto; padding:0 1rem }
 .how-head { text-align:center; margin-bottom:2rem }
-.how-title { margin:0; font-size:1.125rem; color:#0b2540 }
-.how-sub { margin:0.6rem 0 0; color:#64748b }
+.how-title { margin:0; font-size:1.125rem; color: var(--color-heading) }
+.how-sub { margin:0.6rem 0 0; color: var(--color-text); opacity:0.8 }
 
 .steps { display:flex; gap:2rem; align-items:flex-start; justify-content:space-between; position:relative; padding:2rem 1rem 0 }
 
 .step { background:transparent; flex:1; text-align:center; padding-top:1rem }
 .icon-wrap { position:relative; width:96px; height:96px; margin:0 auto 0.75rem; display:flex; align-items:center; justify-content:center }
-.icon { width:72px; height:72px; border-radius:50%; background:#ffffff; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 6px 18px rgba(2,6,23,0.06); border:1px solid rgba(15,23,42,0.04) }
-.badge { position:absolute; right:-6px; top:-6px; min-width:36px; height:36px; padding:0 8px; background:#06b684; color:white; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:700 }
+.icon { width:72px; height:72px; border-radius:50%; background: var(--color-background); display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 6px 18px rgba(2,6,23,0.06); border:1px solid rgba(15,23,42,0.04) }
+.badge { position:absolute; right:-6px; top:-6px; min-width:36px; height:36px; padding:0 8px; background: var(--color-accent-pill); color:var(--vt-c-white); border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:700 }
 
-.step h3 { margin:0.75rem 0 0.5rem; color:#0b2540 }
-.step p { margin:0; color:#475569; max-width:320px; margin-left:auto; margin-right:auto; line-height:1.8 }
+.step h3 { margin:0.75rem 0 0.5rem; color: var(--color-heading) }
+.step p { margin:0; color: var(--color-text); max-width:320px; margin-left:auto; margin-right:auto; line-height:1.8; opacity:0.95 }
 
 @media (max-width:900px) {
   .steps { gap:1rem; padding-top:1rem }

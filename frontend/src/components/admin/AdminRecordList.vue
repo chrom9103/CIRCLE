@@ -125,21 +125,21 @@ function formatDate(d) {
 .records-stack { display: flex; flex-direction: column; gap: 0.75rem; max-width: 100%; align-items: center; }
 
 /* Card */
-.record-card { background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); overflow-x: auto; overflow-y: hidden; width: 100%; max-width: 100%; margin: 0 auto; }
+.record-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.04); overflow-x: auto; overflow-y: hidden; width: 100%; max-width: 100%; margin: 0 auto; }
 .record-card__header { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; gap: 0.5rem; flex-wrap: nowrap; min-width: 720px; }
 .record-card__left { display: flex; flex-direction: column; min-width: 320px; }
-.record-purpose { font-weight: 600; color: #0f172a; }
-.record-meta { font-size: 0.85rem; color: #6b7280; }
+.record-purpose { font-weight: 600; color: var(--color-heading); }
+.record-meta { font-size: 0.85rem; color: var(--color-muted); }
 .record-card__right { display: flex; align-items: center; gap: 0.75rem; min-width: 260px; }
-.record-amount { font-weight: 700; color: #0b5; min-width: 90px; text-align: right; }
-.record-amount.income { color: #059669; }
-.record-amount.expense { color: #dc2626; }
-.record-date { font-size: 0.85rem; color: #6b7280; white-space: nowrap; }
-.expand-btn { background: transparent; border: none; padding: 4px 8px; cursor: pointer; color: #374151; font-size: 24px; }
+.record-amount { font-weight: 700; color: var(--color-on-surface); min-width: 90px; text-align: right; }
+.record-amount.income { color: var(--color-accent-success); }
+.record-amount.expense { color: var(--color-accent-danger); }
+.record-date { font-size: 0.85rem; color: var(--color-muted); white-space: nowrap; }
+.expand-btn { background: transparent; border: none; padding: 4px 8px; cursor: pointer; color: var(--color-muted-strong); font-size: 24px; }
 
-.record-card__body { padding: 0.5rem 0.75rem 0.75rem 0.75rem; background: #fbfbfe; border-top: 1px solid #eef2ff; display: flex; flex-direction: column; gap: 0.5rem; white-space: nowrap; }
+.record-card__body { padding: 0.5rem 0.75rem 0.75rem 0.75rem; background: var(--color-background-soft); border-top: 1px solid var(--color-border-hover); display: flex; flex-direction: column; gap: 0.5rem; white-space: nowrap; }
 .record-card__body .record-detail { display: inline-block; margin-right: 1rem; }
-.record-detail { font-size: 0.9rem; color: #334155; display: inline-block; }
+.record-detail { font-size: 0.9rem; color: var(--color-text); display: inline-block; }
 .details-actions { display: flex; gap: 0.5rem; }
 
 .small { padding: 0.25rem 0.5rem; font-size: 0.85rem; border-radius: 6px; }
@@ -147,7 +147,7 @@ function formatDate(d) {
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.25rem; border: 1px solid transparent; background: transparent; border-radius: 6px; cursor: pointer; }
 .icon-btn img { width: 20px; height: 20px; display: block; }
 
-.empty-stack { padding: 1rem; color: #6b7280; }
+.empty-stack { padding: 1rem; color: var(--color-muted); }
 
 /* simple fade transition */
 .fade-enter-active, .fade-leave-active { transition: opacity 160ms ease; }

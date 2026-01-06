@@ -31,16 +31,16 @@ const formatDate = (dateStr: string) => {
 </template>
 
 <style scoped>
-.list-container { background: #fff; padding: 20px; border-radius: 12px; color: #333; }
-h3 { margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+.list-container { background: var(--color-background); padding: 20px; border-radius: 12px; color: var(--color-on-surface); }
+h3 { margin-top: 0; font-size: 1.1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 10px; }
 ul { list-style: none; padding: 0; }
-.list-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.list-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--color-border-weak); }
 .info { display: flex; flex-direction: column; }
 .purpose { font-weight: bold; }
-.date { font-size: 0.8rem; color: #888; }
+.date { font-size: 0.8rem; color: var(--color-muted); }
 .right { display: flex; align-items: center; gap: 10px; }
-.amount.revenue { color: #29B575; }
-.amount.expense { color: #ff4d4d; }
-.delete-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1.2rem; }
-.delete-btn:hover { color: red; }
+.amount.revenue { color: var(--color-accent-success); }
+.amount.expense { color: var(--color-accent-danger); }
+.delete-btn { background: none; border: none; color: var(--color-border-weak); cursor: pointer; font-size: 1.2rem; }
+.delete-btn:hover { color: var(--color-decline); }
 </style>

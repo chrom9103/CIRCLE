@@ -111,10 +111,10 @@ onMounted(() => {
 .record { padding: 1.25rem }
 .record-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem }
 .header-actions { display:flex; gap:0.75rem; align-items:center }
-.btn-add { background:#29B575; color:#fff; border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer }
+.btn-add { background: var(--color-accent-success); color: var(--vt-c-white); border:none; padding:0.6rem 0.9rem; border-radius:8px; cursor:pointer }
 .summary-area { margin-bottom:1rem }
 .table-area { width: 100% }
-.loading { margin-top:12px; color:#666 }
+.loading { margin-top:12px; color: var(--color-muted) }
 
 @media (max-width:800px) {
   .record-header { flex-direction:column; align-items:flex-start }

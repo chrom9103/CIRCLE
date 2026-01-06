@@ -36,5 +36,5 @@ const total = computed(() => {
 }
 .label { font-size: 0.9rem; color: var(--color-text); font-weight: bold; }
 .amount { font-size: 1.8rem; font-weight: 800; color: var(--vt-c-indigo); font-family: monospace; }
-.amount.minus { color: #e03131; }
+.amount.minus { color: var(--color-accent-danger); }
 </style>

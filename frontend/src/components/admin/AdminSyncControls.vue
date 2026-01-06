@@ -75,12 +75,12 @@ const syncMembers = async () => {
 
 <style scoped>
 .sync-card-wrapper { padding: 8px; box-sizing: border-box; }
-.sync-card { background: #fff; border: 1px solid #e6e6e6; border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04); max-width: 900px; margin: 0.75rem auto; }
+.sync-card { background: var(--color-background); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.75rem; box-shadow: 0 1px 2px rgba(16,24,40,0.04); max-width: 900px; margin: 0.75rem auto; }
 .sync-card__header { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem }
 .sync-title { font-weight:700 }
-.sync-status { color:#6b7280; font-size:0.95rem }
+.sync-status { color: var(--color-text); opacity: 0.7; font-size:0.95rem }
 .sync-card__body { display:flex; gap:0.75rem }
-.sync-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid transparent; background:#f7fafc; cursor:pointer }
+.sync-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 0.75rem; border-radius:6px; border:1px solid transparent; background: var(--color-background-soft); cursor:pointer }
 .sync-btn:disabled { opacity:0.5; cursor:not-allowed }
 .sync-icon { width:20px; height:20px }
 </style>

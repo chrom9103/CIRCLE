@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 
 function getRuntimeEnv() {
-	if (typeof window !== 'undefined' && (window as any).__APP_ENV__) {
+	if (typeof window !== 'undefined' && (window as any).__APP_ENV__ && (window as any).__APP_ENV__.VITE_SUPABASE_URL) {
 		return (window as any).__APP_ENV__
 	}
 	return import.meta.env

@@ -77,6 +77,12 @@
 .icon { width:72px; height:72px; border-radius:50%; background: var(--color-background); display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 6px 18px rgba(2,6,23,0.06); border:1px solid rgba(15,23,42,0.04) }
 .badge { position:absolute; right:-6px; top:-6px; min-width:36px; height:36px; padding:0 8px; background: var(--color-accent-pill); color:var(--vt-c-white); border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:700 }
 
+/* SVG icons should follow theme colors (invert in dark mode) */
+.icon svg { color: var(--color-heading) !important; }
+.icon svg path,
+.icon svg line,
+.icon svg circle { stroke: currentColor; fill: none; }
+
 .step h3 { margin:0.75rem 0 0.5rem; color: var(--color-heading) }
 .step p { margin:0; color: var(--color-text); max-width:320px; margin-left:auto; margin-right:auto; line-height:1.8; opacity:0.95 }
 

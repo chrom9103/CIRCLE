@@ -85,6 +85,12 @@
 .feature h3 { margin:0; font-size:1rem; color: var(--color-heading) }
 .feature p { margin:0; color: var(--color-text); font-size:0.95rem; line-height:1.6 }
 
+/* SVG icons should follow theme colors (invert in dark mode) */
+.feature-icon svg { color: var(--color-background-mute) !important; }
+.feature-icon svg path,
+.feature-icon svg line,
+.feature-icon svg circle { stroke: currentColor; fill: none; }
+
 @media (max-width:1100px) {
   .features-grid { grid-template-columns: repeat(3,1fr); padding:0 1rem }
 }

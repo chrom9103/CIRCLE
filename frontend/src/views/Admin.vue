@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>記録</h1>
-
+    <AdminGate @ready="onAdminReady" />
     <!-- accessDenied または未サインイン時の案内 -->
     <AccessNotice v-if="accessDenied" :accessDenied="accessDenied" :discordId="currentUserDiscordId" />
 
@@ -11,7 +10,6 @@
       </div>
 
     <!-- 記録一覧 -->
-    <AdminGate @ready="onAdminReady" />
     <AdminRecordList :records="activeRecordsLimited" :loading="loading" 
       @soft-delete="softDeleteRecord"
       @mark-processed="markProcessedRecord"

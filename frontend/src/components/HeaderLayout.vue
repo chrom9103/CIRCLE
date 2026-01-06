@@ -15,19 +15,21 @@
       <div v-if="showMenu" class="mobile-backdrop" @click="toggleMenu"></div>
       <div v-if="showMenu" class="mobile-menu" role="menu" @click.stop>
         <router-link to="/" class="mobile-link" @click="toggleMenu" role="menuitem">ホーム</router-link>
+        <router-link to="/about" class="mobile-link" @click="toggleMenu" role="menuitem">使い方</router-link>
         <router-link to="/record" class="mobile-link" @click="toggleMenu" role="menuitem">記録</router-link>
         <router-link to="/admin" class="mobile-link" @click="toggleMenu" role="menuitem">管理</router-link>
         <router-link to="/dashboard" class="mobile-link" @click="toggleMenu" role="menuitem">ダッシュボード</router-link>
         <button v-if="auth.user" class="signout" @click="signOut" role="menuitem">Sign Out</button>
+        <button v-else class="signout" @click="signInWithDiscord" role="menuitem">Sign In</button>
       </div>
 
       <div class="user-wrap">
         <router-link v-if="auth.user" to="/dashboard">
           <img :src="userAvatar" alt="User Avatar" class="avatar" />
         </router-link>
-        <router-link v-else to="/signin">
+        <button v-else class="avatar-btn" @click="signInWithDiscord" aria-label="Sign in">
           <img :src="userAvatar" alt="User Avatar" class="avatar" />
-        </router-link>
+        </button>
       </div>
     </div>
   </header>
@@ -64,6 +66,28 @@ async function signOut() {
   } catch (e) {
     console.error('Failed to sign out:', e)
     try { window.location.href = '/signin' } catch (_) { /* noop */ }
+  }
+}
+
+async function signInWithDiscord() {
+  try {
+    const runtime = (typeof window !== 'undefined' && window.__APP_ENV__) ? window.__APP_ENV__ : import.meta.env
+    const siteBase = runtime.VITE_SITE_URL || `${window.location.origin}${import.meta.env.BASE_URL}`
+    const redirectTo = `${siteBase.replace(/\/+$/, '')}/auth/callback`
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'discord',
+      options: {
+        redirectTo,
+        queryParams: { prompt: 'select_account' }
+      }
+    })
+
+    if (error) {
+      console.error('Login failed:', error.message)
+    }
+  } catch (e) {
+    console.error('signInWithDiscord error', e)
   }
 }
 
@@ -180,6 +204,20 @@ const userAvatar = computed(() => {
   object-fit: cover;
   border: 2px solid var(--color-border);
 }
+<<<<<<< HEAD
+=======
+
+.avatar-btn {
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+>>>>>>> 71c69100e9f513d944ec1670a04eb0f291b0adff
 .burger {
   display: inline-flex;
   align-items: center;

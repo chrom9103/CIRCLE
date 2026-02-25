@@ -26,8 +26,8 @@ spec:
                 name: circle-app-secret
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "50m"
+              memory: "32Mi"
             limits:
               cpu: "200m"
               memory: "1024Mi"
@@ -60,7 +60,7 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "64Mi"
+              memory: "32Mi"
             limits:
               cpu: "200m"
               memory: "256Mi"

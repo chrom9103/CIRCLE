@@ -47,4 +47,4 @@ spec:
   tls:
     - hosts:
         - www.chrom.jp
-      secretName: online-editer-secret
+      secretName: circle-secret
